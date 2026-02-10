@@ -5,13 +5,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catcha Kanban Board</title>
+  <meta name="description" content="A sleek Kanban board for managing your tasks and workflow">
   <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
-  <h1>Catcha Kanban Board</h1>
 
-  <script src="script.js"></script>
+  <div class="app-container">
+    <nav class="sidebar">
+      <div class="logo">
+        <i data-lucide="paw-print"></i>
+        <span class="logo-text">Team CATcha</span>
+      </div>
+      <div class="boards-list" id="boards-nav">
+        <!-- boards are rendered here, in js currently -->
+      </div>
+      <button class="add-board-button">+ Add Kanban Board</button>
+    </nav>
+
+    <main class="main-content">
+      <header class="header">
+        <div class="header-left">
+          <h1 id="board-title">Kanban Board</h1>
+        </div>
+        <div class="header-right">
+          <button class="settings-button">
+            <i data-lucide="settings" class="settings-icon"></i>
+          </button>
+        </div>
+      </header>
+
+      <div id="app"></div>
+    </main>
+  </div>
+  <script type="module" src="./src/main.js"></script>
 </body>
 
 </html>

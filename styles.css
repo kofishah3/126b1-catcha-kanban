@@ -1,16 +1,217 @@
-/* Catcha Kanban Board Styles */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;600;700&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* ===== CSS Variables (Design Tokens) ===== */
+:root {
+  /* colors */
+  --bg-primary: #fffefc;
+  --bg-secondary: #f8f3ec;
+  --bg-card: #e6e2dc;
+  --bg-header: #272727;
+  --bg-column: #f8f4f3;
+  --text-light: #fffefc;
+  --text-primary: #221409;
+  --text-secondary: #885838;
+  --text-muted: #918174;
+  --button-hover-white: #fffffc4f;
+  --button-hover-colored: #ffc0784f;
+
+  /* typography */
+  --font-sans: 'Inter', sans-serif;
+  --font-heading: 'Outfit', sans-serif;
+  
+  --todo-accent: #ff6b6b;
+  --todo-bg: linear-gradient(135deg, #ffe8e8 0%, #fef9f3 100%);
+  --doing-accent: #feca57;
+  --doing-bg: linear-gradient(135deg, #fff5e0 0%, #fef9f3 100%);
+  --done-accent: #1dd1a1;
+  --done-bg: linear-gradient(135deg, #e6fff8 0%, #fef9f3 100%);
+  
+  /* other styles */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  
+  --shadow-card: 0 5px 15px 0px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
 }
 
+/* base styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  margin: 0;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  height: 100vh;
+  overflow: hidden;
 }
 
-h1 {
-  text-align: center;
-  padding: 20px;
+h1, h2, h3, h4, h5, h6 {
+  margin: 0px;
+}
+
+/* layout */
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.sidebar {
+  width: 260px;
+  background-color: var(--bg-header);
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  padding-right: var(--spacing-lg);
+  flex-shrink: 0;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+  overflow: hidden;
+  position: relative;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) 0 var(--spacing-lg) 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-light);
+}
+
+.boards-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.board-link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition-fast);
+  cursor: pointer;
+}
+
+.board-link:hover {
+  background-color: var(--button-hover-white);
+  color: var(--text-light);
+}
+
+.board-link.active {
+  background-color: var(--button-hover-white);
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.add-board-button {
+  all: unset;
+  margin-top: 1rem;
+  padding: var(--spacing-xs);
+  display: flex;
+  justify-content: center;
+  border-width: 2px;
+  border-color: var(--button-hover-white);
+  border-style: dotted; 
+  border-radius: var(--radius-md);  
+  cursor: pointer;
+}
+
+.add-board-button:hover {
+  background-color: var(--button-hover-white);
+  transition: var(--transition-normal);
+}
+
+
+p {
+  font-family: var(--font-sans);
+}
+
+/* main header */
+.header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-lg);
+  border-bottom: 1px solid var(--bg-secondary);
+  background-color: var(--bg-primary);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.header h1 {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.settings-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-button:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.settings-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* board layout */
+.kanban-board {
+  display: flex;
+  height: 100%;
+  padding: var(--spacing-lg);
+  gap: var(--spacing-lg);
+  overflow-x: auto;
+  align-items: flex-start;
+}
+
+.column {
+  width: 25rem;
+  height: 50rem;
+  background-color: var(--bg-column);
+  border-radius: var(--radius-lg);
+  padding: 1rem;  
 }
