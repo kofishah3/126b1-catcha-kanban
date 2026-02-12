@@ -208,7 +208,7 @@ p {
   align-items: flex-start;
 }
 
-.column {
+.kanban-column {
   width: 25rem;
   height: 50rem;
   background-color: var(--bg-column);

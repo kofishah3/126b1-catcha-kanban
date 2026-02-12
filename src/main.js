@@ -45,7 +45,8 @@ function renderBoardsNav() {
 
     boardsNav.appendChild(link);
   });
-  
+    
+  // this just loads all the icons used in the codebase
   if (window.lucide) window.lucide.createIcons();
 }
 
