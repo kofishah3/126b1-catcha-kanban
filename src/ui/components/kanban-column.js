@@ -1,3 +1,5 @@
+import { createTaskCard } from "./task-card.js";
+
 export function createColumn({ id, title }, tasks = []) {
   const section = document.createElement("section");
   const columnClassModifier = title.toLowerCase().replace(/\s+/g, "-");
@@ -6,6 +8,9 @@ export function createColumn({ id, title }, tasks = []) {
 
   const header = document.createElement("div");
   header.className = "kanban-column__header";
+
+  const headerLeft = document.createElement("div");
+  headerLeft.className = "kanban-column__header-left";
 
   const iconName = getIconForTitle(title);
   const icon = document.createElement("i");
@@ -16,11 +21,24 @@ export function createColumn({ id, title }, tasks = []) {
   titleText.className = "kanban-column__title";
   titleText.textContent = title;
 
+  headerLeft.appendChild(icon);
+  headerLeft.appendChild(titleText);
+
+  const addButton = document.createElement("button");
+  addButton.className = "kanban-column__add-button";
+  addButton.title = "Add task to this column";
+  addButton.innerHTML = `<i data-lucide="plus"></i>`;
+
+  header.appendChild(headerLeft);
+  header.appendChild(addButton);
+
   const tasksContainer = document.createElement("div");
   tasksContainer.className = "kanban-column__tasks-container";
 
-  header.appendChild(icon);
-  header.appendChild(titleText);
+  tasks.forEach((task) => {
+    const taskCard = createTaskCard(task);
+    tasksContainer.appendChild(taskCard);
+  });
 
   section.appendChild(header);
   section.appendChild(tasksContainer);

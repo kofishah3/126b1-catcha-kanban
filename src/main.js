@@ -4,7 +4,7 @@ const APP_ELEMENT = document.getElementById("app");
 const BOARDS_NAV_ELEMENT = document.getElementById("boards-nav");
 const BOARD_TITLE_ELEMENT = document.getElementById("board-title");
 
-// mock data
+// Mock Data
 const BOARDS = [
   { id: "board-1", name: "Main Board" },
   { id: "board-2", name: "Marketing" },
@@ -17,11 +17,41 @@ const COLUMNS = [
   { id: "done", title: "Done" },
 ];
 
+const MOCK_TASKS = [
+  {
+    id: "task-1",
+    columnId: "to-do",
+    title: "Design System Refactor",
+    createdAt: "Feb 14, 2026",
+    deadline: "Feb 28, 2026",
+    priority: "High",
+  },
+  {
+    id: "task-2",
+    columnId: "to-do",
+    title: "Write Documentation",
+    createdAt: "Feb 15, 2026",
+    priority: "Medium",
+  },
+  {
+    id: "task-3",
+    columnId: "doing",
+    title: "Implement Task Card UI",
+    createdAt: "Feb 16, 2026",
+    deadline: "Feb 17, 2026",
+    priority: "High",
+  },
+  {
+    id: "task-4",
+    columnId: "done",
+    title: "Project Setup",
+    createdAt: "Feb 10, 2026",
+    priority: "Low",
+  },
+];
+
 let currentBoardId = BOARDS[0].id;
 
-/**
- * Renders the top/side navigation for boards.
- */
 function renderBoardsNav() {
   if (!BOARDS_NAV_ELEMENT) return;
 
@@ -54,9 +84,6 @@ function renderBoardsNav() {
   if (window.lucide) window.lucide.createIcons();
 }
 
-/**
- * Renders the current kanban board.
- */
 function renderBoard() {
   if (!APP_ELEMENT) return;
 
@@ -73,7 +100,10 @@ function renderBoard() {
   boardContainer.className = "kanban-board";
 
   COLUMNS.forEach((column) => {
-    const columnElement = createColumn(column);
+    const columnTasks = MOCK_TASKS.filter(
+      (task) => task.columnId === column.id,
+    );
+    const columnElement = createColumn(column, columnTasks);
     boardContainer.appendChild(columnElement);
   });
 
@@ -81,7 +111,6 @@ function renderBoard() {
   if (window.lucide) window.lucide.createIcons();
 }
 
-// Initial initialization
 function initializeApp() {
   renderBoardsNav();
   renderBoard();
