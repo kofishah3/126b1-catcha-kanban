@@ -1,82 +1,98 @@
-import { createColumn } from "./ui/components/kanban_column.js";
+import { createColumn } from "./ui/components/kanban-column.js";
 
-const app = document.getElementById('app');
-const boardsNav = document.getElementById('boards-nav');
-const boardTitle = document.getElementById('board-title');
+const APP_ELEMENT = document.getElementById("app");
+const BOARDS_NAV_ELEMENT = document.getElementById("boards-nav");
+const BOARD_TITLE_ELEMENT = document.getElementById("board-title");
 
 // mock data
-const boards = [
-  { id: 'board-1', name: 'Main Board' },
-  { id: 'board-2', name: 'Marketing' },
-  { id: 'board-3', name: 'Development' }
+const BOARDS = [
+  { id: "board-1", name: "Main Board" },
+  { id: "board-2", name: "Marketing" },
+  { id: "board-3", name: "Development" },
 ];
 
-const columns = [
-  {id: 'to-do', title: 'To Do'},
-  {id: 'doing', title: 'Doing'},
-  {id: 'done', title: 'Done'},
-]
+const COLUMNS = [
+  { id: "to-do", title: "To Do" },
+  { id: "doing", title: "Doing" },
+  { id: "done", title: "Done" },
+];
 
-let currentBoardId = boards[0].id;
+let currentBoardId = BOARDS[0].id;
 
-// nav bar
+/**
+ * Renders the top/side navigation for boards.
+ */
 function renderBoardsNav() {
-  if (!boardsNav) return;
-  boardsNav.innerHTML = '';
-  
-  boards.forEach(board => {
-    const link = document.createElement('div'); 
-    link.className = `board-link ${board.id === currentBoardId ? 'active' : ''}`;
+  if (!BOARDS_NAV_ELEMENT) return;
+
+  BOARDS_NAV_ELEMENT.innerHTML = "";
+
+  BOARDS.forEach((board) => {
+    const isActive = board.id === currentBoardId;
+    const link = document.createElement("div");
+    link.className = `board-link ${isActive ? "board-link--active" : ""}`;
     link.dataset.boardId = board.id;
-    
-    const icon = document.createElement('i');
-    icon.dataset.lucide = 'layout';
+
+    const icon = document.createElement("i");
+    icon.dataset.lucide = "layout";
     link.appendChild(icon);
-    
-    const text = document.createElement('span');
+
+    const text = document.createElement("span");
+    text.className = "board-link__text";
     text.textContent = board.name;
     link.appendChild(text);
 
-    link.addEventListener('click', () => {
+    link.addEventListener("click", () => {
       currentBoardId = board.id;
-      renderBoardsNav(); 
+      renderBoardsNav();
       renderBoard();
     });
 
-    boardsNav.appendChild(link);
+    BOARDS_NAV_ELEMENT.appendChild(link);
   });
-    
-  // this just loads all the icons used in the codebase
+
   if (window.lucide) window.lucide.createIcons();
 }
 
+/**
+ * Renders the current kanban board.
+ */
 function renderBoard() {
-  if (!app) return;
-  
-  const currentBoard = boards.find(b => b.id === currentBoardId);
-  if(boardTitle) boardTitle.textContent = currentBoard ? currentBoard.name : 'Kanban Board';
+  if (!APP_ELEMENT) return;
 
-  app.innerHTML = "";
+  const currentBoard = BOARDS.find((board) => board.id === currentBoardId);
+  if (BOARD_TITLE_ELEMENT) {
+    BOARD_TITLE_ELEMENT.textContent = currentBoard
+      ? currentBoard.name
+      : "Kanban Board";
+  }
 
+  APP_ELEMENT.innerHTML = "";
 
-  const boardContainer = document.createElement('div');
-  boardContainer.className = 'kanban-board';
+  const boardContainer = document.createElement("div");
+  boardContainer.className = "kanban-board";
 
-  columns.forEach(column => {
-    const column_element = createColumn(column);
-    boardContainer.appendChild(column_element);
-  })
-
-  app.appendChild(boardContainer);
-}
-
-renderBoardsNav();
-renderBoard();
-
-if (window.lucide) {
-  window.lucide.createIcons();
-} else {
-  window.addEventListener('load', () => {
-    if (window.lucide) window.lucide.createIcons();
+  COLUMNS.forEach((column) => {
+    const columnElement = createColumn(column);
+    boardContainer.appendChild(columnElement);
   });
+
+  APP_ELEMENT.appendChild(boardContainer);
+  if (window.lucide) window.lucide.createIcons();
 }
+
+// Initial initialization
+function initializeApp() {
+  renderBoardsNav();
+  renderBoard();
+
+  if (window.lucide) {
+    window.lucide.createIcons();
+  } else {
+    window.addEventListener("load", () => {
+      if (window.lucide) window.lucide.createIcons();
+    });
+  }
+}
+
+initializeApp();

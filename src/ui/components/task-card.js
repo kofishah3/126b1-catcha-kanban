@@ -1,13 +1,13 @@
-export function createTaskCard({id, title}) {
+export function createTaskCard({ id, title }) {
   const card = document.createElement("div");
-  card.className = "task-card"
+  card.className = "task-card";
   card.dataset.id = id;
 
   const titleText = document.createElement("h3");
-  titleText.className = "task-title";
+  titleText.className = "task-card__title";
   titleText.textContent = title;
 
   card.appendChild(titleText);
-  
+
   return card;
 }
