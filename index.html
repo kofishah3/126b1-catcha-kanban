@@ -1,45 +1,55 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catcha Kanban Board</title>
+    <meta
+      name="description"
+      content="A sleek Kanban board for managing your tasks and workflow"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catcha Kanban Board</title>
-  <meta name="description" content="A sleek Kanban board for managing your tasks and workflow">
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
-</head>
-
-<body>
-
-  <div class="app-container">
-    <nav class="sidebar">
-      <div class="logo">
-        <i data-lucide="paw-print"></i>
-        <span class="logo-text">Team CATcha</span>
-      </div>
-      <div class="boards-list" id="boards-nav">
-        <!-- boards are rendered here, in js currently -->
-      </div>
-      <button class="add-board-button">+ Add Kanban Board</button>
-    </nav>
-
-    <main class="main-content">
-      <header class="header">
-        <div class="header-left">
-          <h1 id="board-title">Kanban Board</h1>
+  <body>
+    <div class="app-container" id="app-container">
+      <nav class="sidebar" id="sidebar">
+        <div class="logo">
+          <i data-lucide="paw-print"></i>
+          <span class="logo__text">Team CATcha</span>
         </div>
-        <div class="header-right">
-          <button class="settings-button">
-            <i data-lucide="settings" class="settings-icon"></i>
-          </button>
+        <div class="boards-list" id="boards-nav">
+          <!-- boards are rendered here, in js currently -->
         </div>
-      </header>
+        <button class="add-board-button" id="add-board-button">
+          + Add Kanban Board
+        </button>
+      </nav>
 
-      <div id="app"></div>
-    </main>
-  </div>
-  <script type="module" src="./src/main.js"></script>
-</body>
+      <main class="main-content" id="main-content">
+        <header class="header">
+          <div class="header__left">
+            <h1 class="header__title" id="board-title">Kanban Board</h1>
+            <button
+              class="header__add-task-button"
+              id="universal-add-task-button"
+              title="Add new task"
+            >
+              <i data-lucide="plus"></i>
+              <span>Add Task</span>
+            </button>
+          </div>
+          <div class="header__right">
+            <button class="header__settings-button" id="settings-button">
+              <i data-lucide="settings" class="header__settings-icon"></i>
+            </button>
+          </div>
+        </header>
 
+        <div class="kanban-view" id="app"></div>
+      </main>
+    </div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
 </html>

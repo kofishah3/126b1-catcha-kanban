@@ -40,7 +40,12 @@ Users should be able to:
 catcha-kanban/
 ├── index.html      # Main HTML file
 ├── styles.css      # CSS styles
-├── script.js       # JavaScript logic
+├── src/
+│   ├── main.js     # Main entry point
+│   └── ui/
+│       └── components/
+│           ├── kanban-column.js
+│           └── task-card.js
 └── README.md       # This file
 ```
 
