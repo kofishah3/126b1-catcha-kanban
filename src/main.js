@@ -1,3 +1,4 @@
+import { getTasks } from "./api/storage.js";
 import { createColumn } from "./ui/components/kanban-column.js";
 
 const APP_ELEMENT = document.getElementById("app");
@@ -81,6 +82,7 @@ function renderBoardsNav() {
     BOARDS_NAV_ELEMENT.appendChild(link);
   });
 
+  // this just loads all the icons used in the codebase
   if (window.lucide) window.lucide.createIcons();
 }
 
@@ -99,8 +101,13 @@ function renderBoard() {
   const boardContainer = document.createElement("div");
   boardContainer.className = "kanban-board";
 
+  // Load tasks for the current board from local storage
+  const boardTasks = getTasks(currentBoardId);
+  // const boardTasks = MOCK_TASKS; // Using mock data for now
+
   COLUMNS.forEach((column) => {
-    const columnTasks = MOCK_TASKS.filter(
+    // Filter tasks for this specific column
+    const columnTasks = boardTasks.filter(
       (task) => task.columnId === column.id,
     );
     const columnElement = createColumn(column, columnTasks);
