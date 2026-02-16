@@ -103,6 +103,7 @@ function renderBoard() {
 
   // Load tasks for the current board from local storage
   const boardTasks = getTasks(currentBoardId);
+  // const boardTasks = MOCK_TASKS; // Using mock data for now
 
   COLUMNS.forEach((column) => {
     // Filter tasks for this specific column

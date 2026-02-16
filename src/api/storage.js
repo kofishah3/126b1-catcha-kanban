@@ -1,14 +1,13 @@
 /**
- * Client-side localStorage API for Kanban board task management
- * All operations are board-specific using boardId parameter
- *
  * Task Card Schema:
  * {
  *   id: string,
  *   title: string,
- *   description: string,
- *   columnId: string,     // Column this task belongs to (e.g., "to-do", "doing", "done")
- *   createdAt: number
+ *   // description: string,
+ *   createdAt: date,
+ *   deadline: date,        // (optional, e.g., "2024-12-31"),
+ *   priority: string,      // ("Low", "Medium", "High"),
+ *   columnId: string,      // The status of the card, or the column this task belongs to (e.g., "to-do", "doing", "done")
  * }
  */
 
@@ -105,9 +104,11 @@ export function addTask(boardId, taskData) {
     const newTask = {
       id: generateTaskId(),
       title: taskData.title || "Untitled Task",
-      description: taskData.description || "",
+      createdAt: taskData.createdAt || new Date().toISOString(),
+      deadline: taskData.deadline || null,
+      priority: taskData.priority || null,
+      // description: taskData.description || "",
       columnId: taskData.columnId || "to-do",
-      createdAt: Date.now(),
     };
 
     tasks.push(newTask);
