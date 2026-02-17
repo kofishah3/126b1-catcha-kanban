@@ -1,57 +1,29 @@
-import { getTasks } from "./api/storage.js";
 import { createColumn } from "./ui/components/kanban-column.js";
+import { getBoards, addBoard, addTask, getTasks } from "./api/storage.js";
+
 
 const APP_ELEMENT = document.getElementById("app");
 const BOARDS_NAV_ELEMENT = document.getElementById("boards-nav");
 const BOARD_TITLE_ELEMENT = document.getElementById("board-title");
 
-// Mock Data
-const BOARDS = [
-  { id: "board-1", name: "Main Board" },
-  { id: "board-2", name: "Marketing" },
-  { id: "board-3", name: "Development" },
-];
+
+// Loading boards
+let BOARDS = getBoards();
+
+if (BOARDS.length === 0) {
+  const defaultBoard = addBoard("Main Board");
+  BOARDS = [defaultBoard];
+}
+
+let currentBoardId = BOARDS[0].id;
+
+
 
 const COLUMNS = [
   { id: "to-do", title: "To Do" },
   { id: "doing", title: "Doing" },
   { id: "done", title: "Done" },
 ];
-
-const MOCK_TASKS = [
-  {
-    id: "task-1",
-    columnId: "to-do",
-    title: "Design System Refactor",
-    createdAt: "Feb 14, 2026",
-    deadline: "Feb 28, 2026",
-    priority: "High",
-  },
-  {
-    id: "task-2",
-    columnId: "to-do",
-    title: "Write Documentation",
-    createdAt: "Feb 15, 2026",
-    priority: "Medium",
-  },
-  {
-    id: "task-3",
-    columnId: "doing",
-    title: "Implement Task Card UI",
-    createdAt: "Feb 16, 2026",
-    deadline: "Feb 17, 2026",
-    priority: "High",
-  },
-  {
-    id: "task-4",
-    columnId: "done",
-    title: "Project Setup",
-    createdAt: "Feb 10, 2026",
-    priority: "Low",
-  },
-];
-
-let currentBoardId = BOARDS[0].id;
 
 function renderBoardsNav() {
   if (!BOARDS_NAV_ELEMENT) return;
@@ -103,7 +75,6 @@ function renderBoard() {
 
   // Load tasks for the current board from local storage
   const boardTasks = getTasks(currentBoardId);
-  // const boardTasks = MOCK_TASKS; // Using mock data for now
 
   COLUMNS.forEach((column) => {
     // Filter tasks for this specific column
@@ -117,6 +88,63 @@ function renderBoard() {
   APP_ELEMENT.appendChild(boardContainer);
   if (window.lucide) window.lucide.createIcons();
 }
+
+
+
+// Adding new Kanban Board Logic
+const ADD_BOARD_BUTTON = document.getElementById("add-board-button");
+ADD_BOARD_BUTTON.addEventListener("click", () => {
+  const name = prompt("Board name?");
+  if(!name) return;
+
+  const newBoard = addBoard(name);
+  BOARDS.push(newBoard);
+  currentBoardId = newBoard.id;
+
+  renderBoardsNav();
+  renderBoard();
+});
+
+// Adding task logic
+const ADD_TASK_BUTTON = document.getElementById("universal-add-task-button");
+ADD_TASK_BUTTON.addEventListener("click", () => {
+  const title = prompt("Task title?");
+  if (!title) return;
+
+  addTask(currentBoardId, {
+    title,
+    columnId: "to-do",
+    createdAt: new Date().toLocaleDateString(),
+    priority: "Medium",
+  });
+
+  renderBoard();
+});
+
+document.addEventListener("add-task", (e) => {
+  addTask(currentBoardId, {
+    title: e.detail.title,
+    columnId: e.detail.columnId,
+    createdAt: new Date().toLocaleDateString(),
+  });
+
+  renderBoard();
+});
+
+
+// document.addEventListener("create-task", (e) => {
+//   addTask(currentBoardId, {
+//     title: e.detail.title,
+//     columnId: e.detail.columnId,
+//     priority: e.detail.priority,
+//     deadline: e.detail.deadline,
+//     createdAt: new Date().toLocaleDateString(),
+//   });
+
+//   renderBoard();
+// });
+
+
 
 function initializeApp() {
   renderBoardsNav();

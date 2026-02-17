@@ -43,6 +43,21 @@ export function createColumn({ id, title }, tasks = []) {
   section.appendChild(header);
   section.appendChild(tasksContainer);
 
+  // Adding task
+  addButton.addEventListener("click", () => {
+    const title = prompt(`New task for "${titleText.textContent}"`);
+    if (!title) return;
+
+    document.dispatchEvent(
+      new CustomEvent("add-task", {
+        detail: {
+          title,
+          columnId: id,
+        },
+      }),
+    );
+  });
+
   return section;
 }
 
@@ -56,3 +71,4 @@ function getIconForTitle(title) {
     return "check";
   return "list";
 }
+

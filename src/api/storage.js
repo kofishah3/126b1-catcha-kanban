@@ -206,3 +206,32 @@ export function clearBoardTasks(boardId) {
     return false;
   }
 }
+
+
+/*****************************************************************************************/
+const BOARDS_KEY = "kanban-boards";
+
+export function getBoards() {
+    const data = localStorage.getItem(BOARDS_KEY);
+    return data ? JSON.parse(data) : [];
+}
+
+export function saveBoards(boards) {
+    localStorage.setItem(BOARDS_KEY, JSON.stringify(boards));
+}
+
+export function addBoard(name) {
+    const boards = getBoards();
+
+    const newBoard = {
+        id: `board-${Date.now()}`,
+        name,
+    };
+
+    boards.push(newBoard);
+    saveBoards(boards);
+
+    return newBoard;
+}
+
+
