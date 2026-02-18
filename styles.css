@@ -476,8 +476,8 @@ p {
 }
 
 
-/* modal */
-/* .modal-overlay {
+/* Modal Styles */
+.modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
@@ -536,4 +536,4 @@ p {
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
-} */
+}

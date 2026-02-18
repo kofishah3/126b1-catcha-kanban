@@ -18,13 +18,15 @@ if (BOARDS.length === 0) {
 let currentBoardId = BOARDS[0].id;
 
 
-
+// Fixed Columns
 const COLUMNS = [
   { id: "to-do", title: "To Do" },
   { id: "doing", title: "Doing" },
   { id: "done", title: "Done" },
 ];
 
+
+// Renderer
 function renderBoardsNav() {
   if (!BOARDS_NAV_ELEMENT) return;
 
@@ -58,6 +60,7 @@ function renderBoardsNav() {
   if (window.lucide) window.lucide.createIcons();
 }
 
+
 function renderBoard() {
   if (!APP_ELEMENT) return;
 
@@ -90,8 +93,7 @@ function renderBoard() {
 }
 
 
-
-// Adding new Kanban Board Logic
+// LOGIC: Adding new Kanban Board
 const ADD_BOARD_BUTTON = document.getElementById("add-board-button");
 ADD_BOARD_BUTTON.addEventListener("click", () => {
   const name = prompt("Board name?");
@@ -105,45 +107,19 @@ ADD_BOARD_BUTTON.addEventListener("click", () => {
   renderBoard();
 });
 
-// Adding task logic
-const ADD_TASK_BUTTON = document.getElementById("universal-add-task-button");
-ADD_TASK_BUTTON.addEventListener("click", () => {
-  const title = prompt("Task title?");
-  if (!title) return;
 
-  addTask(currentBoardId, {
-    title,
-    columnId: "to-do",
-    createdAt: new Date().toLocaleDateString(),
-    priority: "Medium",
-  });
-
-  renderBoard();
-});
-
-document.addEventListener("add-task", (e) => {
+// LOGIC: Adding new task
+document.addEventListener("create-task", (e) => {
   addTask(currentBoardId, {
     title: e.detail.title,
     columnId: e.detail.columnId,
-    createdAt: new Date().toLocaleDateString(),
+    priority: e.detail.priority,
+    deadline: e.detail.deadline,
+    createdAt: new Date().toISOString(),
   });
 
   renderBoard();
-});
-
-
-// document.addEventListener("create-task", (e) => {
-//   addTask(currentBoardId, {
-//     title: e.detail.title,
-//     columnId: e.detail.columnId,
-//     priority: e.detail.priority,
-//     deadline: e.detail.deadline,
-//     createdAt: new Date().toLocaleDateString(),
-//   });
-
-//   renderBoard();
-// });
-
+})
 
 
 function initializeApp() {

@@ -1,4 +1,5 @@
 import { createTaskCard } from "./task-card.js";
+import { createTaskModal } from "./task-modal.js";
 
 export function createColumn({ id, title }, tasks = []) {
   const section = document.createElement("section");
@@ -43,19 +44,9 @@ export function createColumn({ id, title }, tasks = []) {
   section.appendChild(header);
   section.appendChild(tasksContainer);
 
-  // Adding task
+  // Display Pop up to add task
   addButton.addEventListener("click", () => {
-    const title = prompt(`New task for "${titleText.textContent}"`);
-    if (!title) return;
-
-    document.dispatchEvent(
-      new CustomEvent("add-task", {
-        detail: {
-          title,
-          columnId: id,
-        },
-      }),
-    );
+    createTaskModal(id);
   });
 
   return section;
