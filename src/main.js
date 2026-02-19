@@ -1,5 +1,7 @@
 import { createColumn } from "./ui/components/kanban-column.js";
-import { getBoards, addBoard, addTask, getTasks } from "./api/storage.js";
+import { getBoards, addBoard, addTask, getTasks, deleteTask, moveTask } from "./api/storage.js";
+import { createKanbanBoardModal } from "./ui/components/kanban-board-modal.js";
+import { createTaskModal } from "./ui/components/task-modal.js";
 
 const APP_ELEMENT = document.getElementById("app");
 const BOARDS_NAV_ELEMENT = document.getElementById("boards-nav");
@@ -90,10 +92,11 @@ function renderBoard() {
 // LOGIC: Adding new Kanban Board
 const ADD_BOARD_BUTTON = document.getElementById("add-board-button");
 ADD_BOARD_BUTTON.addEventListener("click", () => {
-  const name = prompt("Board name?");
-  if (!name) return;
+  createKanbanBoardModal();
+});
 
-  const newBoard = addBoard(name);
+document.addEventListener("create-board", (e) => {
+  const newBoard = addBoard(e.detail.name);
   BOARDS.push(newBoard);
   currentBoardId = newBoard.id;
 
@@ -102,6 +105,15 @@ ADD_BOARD_BUTTON.addEventListener("click", () => {
 });
 
 // LOGIC: Adding new task
+const UNIVERSAL_ADD_TASK_BUTTON = document.getElementById(
+  "universal-add-task-button"
+);
+
+UNIVERSAL_ADD_TASK_BUTTON.addEventListener("click", () => {
+  createTaskModal("to-do");
+});
+
+// LOGIC: Adding new task to specific column (To Do, Doing, Done)
 document.addEventListener("create-task", (e) => {
   addTask(currentBoardId, {
     title: e.detail.title,
@@ -114,9 +126,39 @@ document.addEventListener("create-task", (e) => {
   renderBoard();
 });
 
+// LOGIC: Delete Task from Main storage
+document.addEventListener("delete-task", (e) => {
+  deleteTask(currentBoardId, e.detail.taskId);
+  renderBoard();
+});
+
+// LOGIC: Move Task
+document.addEventListener("move-task", (e) => {
+  const tasks = getTasks(currentBoardId);
+  const task = tasks.find(t => t.id === e.detail.taskId);
+
+  if (!task) return;
+
+  const columnIndex = COLUMNS.findIndex(
+    col => col.id === task.columnId
+  );
+  if (columnIndex === -1 || columnIndex === COLUMNS.length - 1) return;
+
+  const nextColumnId = COLUMNS[columnIndex + 1].id;
+  moveTask(currentBoardId, task.id, nextColumnId);
+  renderBoard();
+});
+
+
+document.addEventListener("open-create-task", (e) => {
+  createTaskModal(e.detail.columnId);
+});
+
+
 document.addEventListener("refresh-board", () => {
   renderBoard();
 });
+
 
 function initializeApp() {
   renderBoardsNav();

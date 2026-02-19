@@ -1,4 +1,4 @@
-export function createTaskModal(columnId, boardId) {
+export function createTaskModal(columnId) {
   const overlay = document.createElement("div");
   overlay.className = "modal-overlay";
 
@@ -68,7 +68,6 @@ export function createTaskModal(columnId, boardId) {
           priority,
           deadline,
           columnId,
-          boardId,
         },
       })
     );

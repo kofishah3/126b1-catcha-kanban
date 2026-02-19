@@ -46,7 +46,11 @@ export function createColumn({ id, title }, tasks = [], boardId) {
 
   // Display Pop up to add task
   addButton.addEventListener("click", () => {
-    createTaskModal(id, boardId);
+    document.dispatchEvent(
+      new CustomEvent("open-create-task", {
+        detail: { columnId: id }
+      })
+    );
   });
 
   return section;

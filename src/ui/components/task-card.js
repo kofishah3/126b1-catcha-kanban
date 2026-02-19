@@ -1,4 +1,3 @@
-import { deleteTask, moveTask } from "../../api/storage.js";
 export function createTaskCard(
   { id, title, createdAt, deadline, priority },
   boardId,
@@ -25,25 +24,28 @@ export function createTaskCard(
   moveButton.innerHTML = `<i data-lucide="circle-check"></i>`;
 
   moveButton.onclick = () => {
-    const board = document.getElementById("app");
-    const columns = Array.from(board.querySelectorAll(".kanban-column"));
     const currentColumn = card.closest(".kanban-column");
     if (!currentColumn) return;
 
-    const currentIndex = columns.indexOf(currentColumn);
-    if (currentIndex === -1 || currentIndex === columns.length - 1) return;
-
-    const nextColumn = columns[currentIndex + 1];
-    const nextTasksContainer = nextColumn.querySelector(
-      ".kanban-column__tasks-container",
+    const columns = Array.from(
+      document.querySelectorAll(".kanban-column")
     );
-    if (!nextTasksContainer) return;
+    const index = columns.indexOf(currentColumn);
 
-    nextTasksContainer.appendChild(card);
+    if (index === -1 || index === columns.length - 1) return;
 
-    // Persist changes
-    const nextColumnId = nextColumn.dataset.columnId;
+    const nextColumnId = columns[index + 1].dataset.columnId;
     moveTask(boardId, id, nextColumnId);
+
+    document.dispatchEvent(new CustomEvent("refresh-board"));
+  };
+
+  moveButton.onclick = () => {
+    document.dispatchEvent(
+      new CustomEvent("move-task", {
+        detail: { taskId: id }
+      })
+    );
   };
 
   // --- DELETE BUTTON ---
@@ -53,11 +55,17 @@ export function createTaskCard(
   deleteButton.innerHTML = `<i data-lucide="trash"></i>`;
 
   deleteButton.onclick = () => {
-    deleteTask(boardId, id);
-    document.dispatchEvent(new CustomEvent("refresh-board"));
+    document.dispatchEvent(
+      new CustomEvent("delete-task", {
+        detail: { taskId: id }
+      })
+    );
   };
 
   // Add buttons to wrapper
+  const actions = document.createElement("div");
+  actions.className = "task-card__actions";
+
   actions.appendChild(moveButton);
   actions.appendChild(deleteButton);
 
