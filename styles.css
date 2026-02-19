@@ -400,6 +400,24 @@ p {
   line-height: 1.4;
 }
 
+.task-card__actions {
+  display: flex;
+  gap: 4px; 
+}
+
+.task-card__delete-button {
+  background: none;
+  border: none;
+  padding: 4px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.task-card_delete-button svg {
+  width: 16px;
+  height: 16px;
+}
+
 .task-card__move-button {
   all: unset;
   cursor: pointer;
@@ -473,4 +491,67 @@ p {
 .task-card__priority--low {
   background-color: #e3f2fd;
   color: #1976d2;
+}
+
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.task-modal {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.task-modal h2 {
+  margin: 0;
+  font-family: var(--font-heading);
+}
+
+.task-modal label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.priority-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.priority-buttons button {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.priority-buttons .active {
+  background: var(--todo-accent);
+  color: white;
+  border-color: transparent;
+}
+
+.deadline-selects {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
