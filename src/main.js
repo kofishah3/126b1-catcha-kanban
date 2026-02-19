@@ -1,12 +1,9 @@
 import { createColumn } from "./ui/components/kanban-column.js";
 import { getBoards, addBoard, addTask, getTasks } from "./api/storage.js";
-import { getTasks } from "./api/storage.js";
-import { createColumn } from "./ui/components/kanban-column.js";
 
 const APP_ELEMENT = document.getElementById("app");
 const BOARDS_NAV_ELEMENT = document.getElementById("boards-nav");
 const BOARD_TITLE_ELEMENT = document.getElementById("board-title");
-
 
 // Loading boards
 let BOARDS = getBoards();
@@ -18,14 +15,12 @@ if (BOARDS.length === 0) {
 
 let currentBoardId = BOARDS[0].id;
 
-
 // Fixed Columns
 const COLUMNS = [
   { id: "to-do", title: "To Do" },
   { id: "doing", title: "Doing" },
   { id: "done", title: "Done" },
 ];
-
 
 // Renderer
 function renderBoardsNav() {
@@ -61,7 +56,6 @@ function renderBoardsNav() {
   if (window.lucide) window.lucide.createIcons();
 }
 
-
 function renderBoard() {
   if (!APP_ELEMENT) return;
 
@@ -93,12 +87,11 @@ function renderBoard() {
   if (window.lucide) window.lucide.createIcons();
 }
 
-
 // LOGIC: Adding new Kanban Board
 const ADD_BOARD_BUTTON = document.getElementById("add-board-button");
 ADD_BOARD_BUTTON.addEventListener("click", () => {
   const name = prompt("Board name?");
-  if(!name) return;
+  if (!name) return;
 
   const newBoard = addBoard(name);
   BOARDS.push(newBoard);
@@ -107,7 +100,6 @@ ADD_BOARD_BUTTON.addEventListener("click", () => {
   renderBoardsNav();
   renderBoard();
 });
-
 
 // LOGIC: Adding new task
 document.addEventListener("create-task", (e) => {
@@ -120,12 +112,11 @@ document.addEventListener("create-task", (e) => {
   });
 
   renderBoard();
-})
+});
 
 document.addEventListener("refresh-board", () => {
   renderBoard();
 });
-
 
 function initializeApp() {
   renderBoardsNav();

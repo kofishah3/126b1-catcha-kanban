@@ -402,7 +402,7 @@ p {
 
 .task-card__actions {
   display: flex;
-  gap: 4px; 
+  gap: 4px;
 }
 
 .task-card__delete-button {
@@ -413,7 +413,7 @@ p {
   cursor: pointer;
 }
 
-.task-card_delete-button svg {
+.task-card__delete-button svg {
   width: 16px;
   height: 16px;
 }
@@ -492,7 +492,6 @@ p {
   background-color: #e3f2fd;
   color: #1976d2;
 }
-
 
 /* Modal Styles */
 .modal-overlay {

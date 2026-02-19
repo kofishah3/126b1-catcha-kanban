@@ -1,5 +1,8 @@
-import { deleteTask } from "../../api/storage.js";
-export function createTaskCard({ id, title, createdAt, deadline, priority }, boardId) {
+import { deleteTask, moveTask } from "../../api/storage.js";
+export function createTaskCard(
+  { id, title, createdAt, deadline, priority },
+  boardId,
+) {
   const card = document.createElement("div");
   card.className = "task-card";
   card.dataset.taskId = id;
@@ -32,20 +35,24 @@ export function createTaskCard({ id, title, createdAt, deadline, priority }, boa
 
     const nextColumn = columns[currentIndex + 1];
     const nextTasksContainer = nextColumn.querySelector(
-      ".kanban-column__tasks-container"
+      ".kanban-column__tasks-container",
     );
     if (!nextTasksContainer) return;
 
     nextTasksContainer.appendChild(card);
+
+    // Persist changes
+    const nextColumnId = nextColumn.dataset.columnId;
+    moveTask(boardId, id, nextColumnId);
   };
-  
+
   // --- DELETE BUTTON ---
   const deleteButton = document.createElement("button");
   deleteButton.className = "task-card__delete-button"; // FIXED
   deleteButton.title = "Delete task";
   deleteButton.innerHTML = `<i data-lucide="trash"></i>`;
 
-  deleteButton.onclick = () => { 
+  deleteButton.onclick = () => {
     deleteTask(boardId, id);
     document.dispatchEvent(new CustomEvent("refresh-board"));
   };
@@ -91,4 +98,3 @@ export function createTaskCard({ id, title, createdAt, deadline, priority }, boa
 
   return card;
 }
-
