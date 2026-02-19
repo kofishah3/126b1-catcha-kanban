@@ -400,6 +400,24 @@ p {
   line-height: 1.4;
 }
 
+.task-card__actions {
+  display: flex;
+  gap: 4px;
+}
+
+.task-card__delete-button {
+  background: none;
+  border: none;
+  padding: 4px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.task-card__delete-button svg {
+  width: 16px;
+  height: 16px;
+}
+
 .task-card__move-button {
   all: unset;
   cursor: pointer;
@@ -474,7 +492,6 @@ p {
   background-color: #e3f2fd;
   color: #1976d2;
 }
-
 
 /* Modal Styles */
 .modal-overlay {

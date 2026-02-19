@@ -1,7 +1,7 @@
 import { createTaskCard } from "./task-card.js";
 import { createTaskModal } from "./task-modal.js";
 
-export function createColumn({ id, title }, tasks = []) {
+export function createColumn({ id, title }, tasks = [], boardId) {
   const section = document.createElement("section");
   const columnClassModifier = title.toLowerCase().replace(/\s+/g, "-");
   section.className = `kanban-column kanban-column--${columnClassModifier}`;
@@ -37,7 +37,7 @@ export function createColumn({ id, title }, tasks = []) {
   tasksContainer.className = "kanban-column__tasks-container";
 
   tasks.forEach((task) => {
-    const taskCard = createTaskCard(task);
+    const taskCard = createTaskCard(task, boardId);
     tasksContainer.appendChild(taskCard);
   });
 
@@ -46,7 +46,11 @@ export function createColumn({ id, title }, tasks = []) {
 
   // Display Pop up to add task
   addButton.addEventListener("click", () => {
-    createTaskModal(id);
+    document.dispatchEvent(
+      new CustomEvent("open-create-task", {
+        detail: { columnId: id }
+      })
+    );
   });
 
   return section;
