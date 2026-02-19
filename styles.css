@@ -389,7 +389,7 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 2px;
+  gap: var(--spacing-sm);
 }
 
 .task-card__title {

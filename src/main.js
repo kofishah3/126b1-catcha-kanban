@@ -1,5 +1,7 @@
 import { createColumn } from "./ui/components/kanban-column.js";
 import { getBoards, addBoard, addTask, getTasks } from "./api/storage.js";
+import { getTasks } from "./api/storage.js";
+import { createColumn } from "./ui/components/kanban-column.js";
 
 const APP_ELEMENT = document.getElementById("app");
 const BOARDS_NAV_ELEMENT = document.getElementById("boards-nav");
