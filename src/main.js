@@ -1,5 +1,7 @@
 import { createColumn } from "./ui/components/kanban-column.js";
 import { getBoards, addBoard, addTask, getTasks } from "./api/storage.js";
+import { createKanbanBoardModal } from "./ui/components/kanban-board-modal.js";
+import { createTaskModal } from "./ui/components/task-modal.js";
 
 
 const APP_ELEMENT = document.getElementById("app");
@@ -96,10 +98,11 @@ function renderBoard() {
 // LOGIC: Adding new Kanban Board
 const ADD_BOARD_BUTTON = document.getElementById("add-board-button");
 ADD_BOARD_BUTTON.addEventListener("click", () => {
-  const name = prompt("Board name?");
-  if(!name) return;
+  createKanbanBoardModal();
+});
 
-  const newBoard = addBoard(name);
+document.addEventListener("create-board", (e) => {
+  const newBoard = addBoard(e.detail.name);
   BOARDS.push(newBoard);
   currentBoardId = newBoard.id;
 
@@ -109,6 +112,18 @@ ADD_BOARD_BUTTON.addEventListener("click", () => {
 
 
 // LOGIC: Adding new task
+const UNIVERSAL_ADD_TASK_BUTTON = document.getElementById(
+  "universal-add-task-button"
+);
+
+UNIVERSAL_ADD_TASK_BUTTON.addEventListener("click", () => {
+  import("./ui/components/task-modal.js").then(({ createTaskModal}) => {
+    createTaskModal("to-do");
+  });
+});
+
+
+// LOGIC: Adding new task to specific column (To Do, Doing, Done)
 document.addEventListener("create-task", (e) => {
   addTask(currentBoardId, {
     title: e.detail.title,
