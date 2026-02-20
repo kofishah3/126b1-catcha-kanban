@@ -13,10 +13,6 @@ export function createTaskCard(
   titleText.className = "task-card__title";
   titleText.textContent = title;
 
-  // --- ACTIONS WRAPPER (NEW) ---
-  const actions = document.createElement("div");
-  actions.className = "task-card__actions";
-
   // --- MOVE BUTTON ---
   const moveButton = document.createElement("button");
   moveButton.className = "task-card__move-button";
@@ -24,41 +20,24 @@ export function createTaskCard(
   moveButton.innerHTML = `<i data-lucide="circle-check"></i>`;
 
   moveButton.onclick = () => {
-    const currentColumn = card.closest(".kanban-column");
-    if (!currentColumn) return;
-
-    const columns = Array.from(
-      document.querySelectorAll(".kanban-column")
-    );
-    const index = columns.indexOf(currentColumn);
-
-    if (index === -1 || index === columns.length - 1) return;
-
-    const nextColumnId = columns[index + 1].dataset.columnId;
-    moveTask(boardId, id, nextColumnId);
-
-    document.dispatchEvent(new CustomEvent("refresh-board"));
-  };
-
-  moveButton.onclick = () => {
     document.dispatchEvent(
       new CustomEvent("move-task", {
-        detail: { taskId: id }
-      })
+        detail: { taskId: id },
+      }),
     );
   };
 
   // --- DELETE BUTTON ---
   const deleteButton = document.createElement("button");
-  deleteButton.className = "task-card__delete-button"; // FIXED
+  deleteButton.className = "task-card__delete-button";
   deleteButton.title = "Delete task";
   deleteButton.innerHTML = `<i data-lucide="trash"></i>`;
 
   deleteButton.onclick = () => {
     document.dispatchEvent(
       new CustomEvent("delete-task", {
-        detail: { taskId: id }
-      })
+        detail: { taskId: id },
+      }),
     );
   };
 

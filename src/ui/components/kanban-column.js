@@ -1,5 +1,4 @@
 import { createTaskCard } from "./task-card.js";
-import { createTaskModal } from "./task-modal.js";
 
 export function createColumn({ id, title }, tasks = [], boardId) {
   const section = document.createElement("section");
@@ -48,8 +47,8 @@ export function createColumn({ id, title }, tasks = [], boardId) {
   addButton.addEventListener("click", () => {
     document.dispatchEvent(
       new CustomEvent("open-create-task", {
-        detail: { columnId: id }
-      })
+        detail: { columnId: id },
+      }),
     );
   });
 
@@ -66,4 +65,3 @@ function getIconForTitle(title) {
     return "check";
   return "list";
 }
-
