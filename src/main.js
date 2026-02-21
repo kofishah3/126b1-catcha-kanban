@@ -218,6 +218,11 @@ document.addEventListener("move-task", (e) => {
   renderBoard();
 });
 
+document.addEventListener("move-task-to-column", (e) => {
+  moveTask(currentBoardId, e.detail.taskId, e.detail.newColumnId);
+  renderBoard();
+});
+
 document.addEventListener("open-create-task", (e) => {
   createTaskModal(e.detail.columnId);
 });

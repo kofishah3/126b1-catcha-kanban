@@ -88,6 +88,17 @@ export function createTaskCard(
     footer.appendChild(priorityBadge);
   }
 
+  card.draggable = true;
+
+  card.addEventListener("dragstart", (e) => {
+    e.dataTransfer.setData("text/plain", id);
+    card.classList.add("task-card--dragging");
+  });
+
+  card.addEventListener("dragend", () => {
+    card.classList.remove("task-card--dragging");
+  });
+
   card.appendChild(header);
   card.appendChild(info);
   card.appendChild(footer);

@@ -55,6 +55,27 @@ export function createColumn({ id, title }, tasks = [], boardId) {
   section.appendChild(header);
   section.appendChild(tasksContainer);
 
+  section.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    section.classList.add("kanban-column--drag-over");
+  });
+
+  section.addEventListener("dragleave", () => {
+    section.classList.remove("kanban-column--drag-over");
+  });
+
+  section.addEventListener("drop", (e) => {
+    e.preventDefault();
+    section.classList.remove("kanban-column--drag-over");
+    const taskId = e.dataTransfer.getData("text/plain");
+
+    document.dispatchEvent(
+      new CustomEvent("move-task-to-column", {
+        detail: { taskId, newColumnId: id },
+      }),
+    );
+  });
+
   addButton.addEventListener("click", () => {
     document._lastFocusedBeforeModal = addButton;
     document.dispatchEvent(
