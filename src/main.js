@@ -1,5 +1,5 @@
 import { createColumn } from "./ui/components/kanban-column.js";
-import { getBoards, addBoard, addTask, getTasks, deleteTask, moveTask } from "./api/storage.js";
+import { getBoards, addBoard, addTask, getTasks, deleteTask, moveTask, deleteBoard } from "./api/storage.js";
 import { createKanbanBoardModal } from "./ui/components/kanban-board-modal.js";
 import { createTaskModal } from "./ui/components/task-modal.js";
 
@@ -32,12 +32,19 @@ function renderBoardsNav() {
 
   BOARDS.forEach((board) => {
     const isActive = board.id === currentBoardId;
+
     const link = document.createElement("div");
     link.className = `board-link ${isActive ? "board-link--active" : ""}`;
     link.dataset.boardId = board.id;
 
+    // Keyboard accessibility for board links
+    link.setAttribute("tabindex", "0");
+    link.setAttribute("role", "button");
+    link.setAttribute("aria-label", `Switch to board: ${board.name}`);
+
     const icon = document.createElement("i");
     icon.dataset.lucide = "layout";
+    icon.setAttribute("aria-hidden", "true");
     link.appendChild(icon);
 
     const text = document.createElement("span");
@@ -45,16 +52,59 @@ function renderBoardsNav() {
     text.textContent = board.name;
     link.appendChild(text);
 
-    link.addEventListener("click", () => {
+    // Switch board on click or Enter/Space
+    const switchBoard = () => {
       currentBoardId = board.id;
       renderBoardsNav();
       renderBoard();
+    };
+
+    link.addEventListener("click", switchBoard);
+    link.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        switchBoard();
+      }
     });
+
+    // ── Delete board button ──
+    // Only show delete button if there's more than 1 board
+    if (BOARDS.length > 1) {
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "board-link__delete-button";
+      deleteBtn.setAttribute("aria-label", `Delete board: ${board.name}`);
+      deleteBtn.innerHTML = `<i data-lucide="trash-2" aria-hidden="true"></i>`;
+
+      deleteBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); // prevent switching to the board when deleting
+        const confirmed = confirm(`Delete board "${board.name}"? This will also delete all its tasks.`);
+        if (!confirmed) return;
+
+        deleteBoard(board.id);
+        BOARDS = BOARDS.filter((b) => b.id !== board.id);
+
+        // If we deleted the active board, switch to the first remaining one
+        if (currentBoardId === board.id) {
+          currentBoardId = BOARDS[0].id;
+        }
+
+        renderBoardsNav();
+        renderBoard();
+      });
+
+      deleteBtn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          deleteBtn.click();
+        }
+      });
+
+      link.appendChild(deleteBtn);
+    }
 
     BOARDS_NAV_ELEMENT.appendChild(link);
   });
 
-  // this just loads all the icons used in the codebase
   if (window.lucide) window.lucide.createIcons();
 }
 
@@ -73,11 +123,9 @@ function renderBoard() {
   const boardContainer = document.createElement("div");
   boardContainer.className = "kanban-board";
 
-  // Load tasks for the current board from local storage
   const boardTasks = getTasks(currentBoardId);
 
   COLUMNS.forEach((column) => {
-    // Filter tasks for this specific column
     const columnTasks = boardTasks.filter(
       (task) => task.columnId === column.id,
     );
@@ -92,6 +140,7 @@ function renderBoard() {
 // LOGIC: Adding new Kanban Board
 const ADD_BOARD_BUTTON = document.getElementById("add-board-button");
 ADD_BOARD_BUTTON.addEventListener("click", () => {
+  document._lastFocusedBeforeModal = ADD_BOARD_BUTTON;
   createKanbanBoardModal();
 });
 
@@ -110,10 +159,11 @@ const UNIVERSAL_ADD_TASK_BUTTON = document.getElementById(
 );
 
 UNIVERSAL_ADD_TASK_BUTTON.addEventListener("click", () => {
+  document._lastFocusedBeforeModal = UNIVERSAL_ADD_TASK_BUTTON;
   createTaskModal("to-do");
 });
 
-// LOGIC: Adding new task to specific column (To Do, Doing, Done)
+// LOGIC: Adding new task to specific column
 document.addEventListener("create-task", (e) => {
   addTask(currentBoardId, {
     title: e.detail.title,
@@ -126,7 +176,7 @@ document.addEventListener("create-task", (e) => {
   renderBoard();
 });
 
-// LOGIC: Delete Task from Main storage
+// LOGIC: Delete Task
 document.addEventListener("delete-task", (e) => {
   deleteTask(currentBoardId, e.detail.taskId);
   renderBoard();
@@ -139,9 +189,7 @@ document.addEventListener("move-task", (e) => {
 
   if (!task) return;
 
-  const columnIndex = COLUMNS.findIndex(
-    col => col.id === task.columnId
-  );
+  const columnIndex = COLUMNS.findIndex(col => col.id === task.columnId);
   if (columnIndex === -1 || columnIndex === COLUMNS.length - 1) return;
 
   const nextColumnId = COLUMNS[columnIndex + 1].id;
@@ -149,16 +197,13 @@ document.addEventListener("move-task", (e) => {
   renderBoard();
 });
 
-
 document.addEventListener("open-create-task", (e) => {
   createTaskModal(e.detail.columnId);
 });
 
-
 document.addEventListener("refresh-board", () => {
   renderBoard();
 });
-
 
 function initializeApp() {
   renderBoardsNav();

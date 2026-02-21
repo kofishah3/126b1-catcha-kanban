@@ -107,7 +107,6 @@ export function addTask(boardId, taskData) {
       createdAt: taskData.createdAt || new Date().toISOString(),
       deadline: taskData.deadline || null,
       priority: taskData.priority || null,
-      // description: taskData.description || "",
       columnId: taskData.columnId || "to-do",
     };
 
@@ -140,12 +139,11 @@ export function updateTask(boardId, taskId, updates) {
       return null;
     }
 
-    // Merge updates with existing task
     tasks[taskIndex] = {
       ...tasks[taskIndex],
       ...updates,
-      id: tasks[taskIndex].id, // Prevent ID from being changed
-      createdAt: tasks[taskIndex].createdAt, // Prevent createdAt from being changed
+      id: tasks[taskIndex].id,
+      createdAt: tasks[taskIndex].createdAt,
     };
 
     if (saveTasks(boardId, tasks)) {
@@ -185,8 +183,8 @@ export function deleteTask(boardId, taskId) {
  * Move a task to a different column
  * @param {string} boardId
  * @param {string} taskId
- * @param {string} newColumnId - The target column identifier
- * @returns {Object|null} The updated task object or null if failed
+ * @param {string} newColumnId
+ * @returns {Object|null}
  */
 export function moveTask(boardId, taskId, newColumnId) {
   return updateTask(boardId, taskId, { columnId: newColumnId });
@@ -212,26 +210,46 @@ export function clearBoardTasks(boardId) {
 const BOARDS_KEY = "kanban-boards";
 
 export function getBoards() {
-    const data = localStorage.getItem(BOARDS_KEY);
-    return data ? JSON.parse(data) : [];
+  const data = localStorage.getItem(BOARDS_KEY);
+  return data ? JSON.parse(data) : [];
 }
 
 export function saveBoards(boards) {
-    localStorage.setItem(BOARDS_KEY, JSON.stringify(boards));
+  localStorage.setItem(BOARDS_KEY, JSON.stringify(boards));
 }
 
 export function addBoard(name) {
-    const boards = getBoards();
+  const boards = getBoards();
 
-    const newBoard = {
-        id: `board-${Date.now()}`,
-        name,
-    };
+  const newBoard = {
+    id: `board-${Date.now()}`,
+    name,
+  };
 
-    boards.push(newBoard);
-    saveBoards(boards);
+  boards.push(newBoard);
+  saveBoards(boards);
 
-    return newBoard;
+  return newBoard;
 }
 
+/**
+ * Delete a board and all its tasks
+ * @param {string} boardId
+ * @returns {boolean}
+ */
+export function deleteBoard(boardId) {
+  try {
+    // Remove all tasks belonging to this board
+    clearBoardTasks(boardId);
 
+    // Remove board from boards list
+    const boards = getBoards();
+    const filtered = boards.filter((b) => b.id !== boardId);
+    saveBoards(filtered);
+
+    return true;
+  } catch (error) {
+    console.error("Error deleting board:", error);
+    return false;
+  }
+}

@@ -44,6 +44,10 @@
 
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
+
+  /* ── Accessibility: focus ring color ── */
+  --focus-ring: #ff6b6b;
+  --focus-ring-offset: 2px;
 }
 
 /* base styles */
@@ -141,6 +145,43 @@ h6 {
 
 .board-link__text {
   font-size: 0.95rem;
+  flex: 1; /* pushes delete button to the right */
+}
+
+.board-link__delete-button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity var(--transition-fast), color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+/* Only show the delete button when hovering the board link */
+.board-link:hover .board-link__delete-button,
+.board-link:focus-within .board-link__delete-button {
+  opacity: 1;
+}
+
+.board-link__delete-button:hover {
+  color: #ff6b6b;
+}
+
+.board-link__delete-button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.board-link__delete-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+  opacity: 1;
 }
 
 .add-board-button {
@@ -336,7 +377,7 @@ p {
   background: var(--todo-bg);
 }
 .kanban-column--to-do .kanban-column__header {
-  background-color: #ffd6d6; /* Light Red */
+  background-color: #ffd6d6;
   color: #d63031;
 }
 
@@ -344,7 +385,7 @@ p {
   background: var(--doing-bg);
 }
 .kanban-column--doing .kanban-column__header {
-  background-color: #fff3bf; /* Light Yellow */
+  background-color: #fff3bf;
   color: #f0932b;
 }
 
@@ -352,7 +393,7 @@ p {
   background: var(--done-bg);
 }
 .kanban-column--done .kanban-column__header {
-  background-color: #c3fae8; /* Light Green */
+  background-color: #c3fae8;
   color: #00b894;
 }
 
@@ -592,4 +633,104 @@ textarea {
 .modal-actions button:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-hover);
+}
+
+/* =============================================================
+   KEYBOARD ACCESSIBILITY — Focus Styles
+   ============================================================= */
+
+/*
+  Remove the default browser outline globally,
+  then re-apply a beautiful custom one via :focus-visible.
+  :focus-visible only triggers on keyboard navigation,
+  NOT on mouse clicks — so it won't interfere with your design.
+*/
+*:focus {
+  outline: none;
+}
+
+/* ── Universal focus ring ── */
+*:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* ── Task cards get a slightly bigger ring since they're larger ── */
+.task-card:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15);
+}
+
+/* ── Sidebar board links ── */
+.board-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+  background-color: var(--button-hover-white);
+  color: var(--text-light);
+}
+
+/* ── Add Board button (dark background) ── */
+.add-board-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+}
+
+/* ── Column add (+) button ── */
+.kanban-column__add-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* ── Move & Delete buttons on task cards ── */
+.task-card__move-button:focus-visible,
+.task-card__delete-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Priority buttons inside modal ── */
+.priority-buttons button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Text inputs & selects inside modal ── */
+input[type="text"]:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none; /* we use border instead for inputs */
+  border-color: var(--focus-ring);
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+}
+
+/* ── Modal action buttons ── */
+.modal-actions button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Header buttons ── */
+.header__add-task-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.2);
+}
+
+.header__settings-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ── Board links in sidebar (may be divs — need explicit focus style) ── */
+.board-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+  background-color: var(--button-hover-white);
+  color: var(--text-light);
 }
