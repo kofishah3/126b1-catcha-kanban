@@ -1,39 +1,48 @@
 export function createTaskModal(columnId) {
   const overlay = document.createElement("div");
   overlay.className = "modal-overlay";
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+  overlay.setAttribute("aria-labelledby", "task-modal-title");
 
   const modal = document.createElement("div");
   modal.className = "task-modal";
 
   modal.innerHTML = `
-    <h2>Create Task</h2>
+    <h2 id="task-modal-title">Create Task</h2>
 
     <label>
       Task Name
-      <input type="text" id="task-title" placeholder="Enter task name" />
+      <input
+        type="text"
+        id="task-title"
+        placeholder="Enter task name"
+        aria-label="Task name"
+        aria-required="true"
+      />
     </label>
 
     <label>
       Priority
-      <div class="priority-buttons">
-        <button data-priority="Low">Low</button>
-        <button data-priority="Medium" class="active">Medium</button>
-        <button data-priority="High">High</button>
+      <div class="priority-buttons" role="group" aria-label="Select task priority">
+        <button data-priority="Low" aria-pressed="false" aria-label="Set priority to Low">Low</button>
+        <button data-priority="Medium" class="active" aria-pressed="true" aria-label="Set priority to Medium">Medium</button>
+        <button data-priority="High" aria-pressed="false" aria-label="Set priority to High">High</button>
       </div>
     </label>
 
     <label>
       Deadline
       <div class="deadline-selects">
-        <select id="deadline-month"></select>
-        <select id="deadline-day"></select>
-        <select id="deadline-year"></select>
+        <select id="deadline-month" aria-label="Deadline month"></select>
+        <select id="deadline-day" aria-label="Deadline day"></select>
+        <select id="deadline-year" aria-label="Deadline year"></select>
       </div>
     </label>
 
     <div class="modal-actions">
-      <button id="cancel-task">Cancel</button>
-      <button id="create-task">Create</button>
+      <button id="cancel-task" aria-label="Cancel and close modal">Cancel</button>
+      <button id="create-task" aria-label="Create task">Create</button>
     </div>
   `;
 
@@ -43,13 +52,60 @@ export function createTaskModal(columnId) {
   setupDeadlineOptions();
   setupPriorityButtons();
 
-  // Cancel creating task
-  modal.querySelector("#cancel-task").onclick = () => overlay.remove();
+  // ── Auto-focus the Task Name input when modal opens ──
+  const titleInput = modal.querySelector("#task-title");
+  requestAnimationFrame(() => titleInput.focus());
 
-  // Create task
-  modal.querySelector("#create-task").onclick = () => {
+  // ── Close helpers ──
+  const closeModal = () => {
+    overlay.remove();
+    // Return focus to the element that opened the modal, if tracked
+    if (document._lastFocusedBeforeModal) {
+      document._lastFocusedBeforeModal.focus();
+      document._lastFocusedBeforeModal = null;
+    }
+  };
+
+  // ── Escape key closes modal ──
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeModal();
+    }
+
+    // ── Tab key: trap focus inside modal ──
+    if (e.key === "Tab") {
+      const focusable = getFocusableElements(modal);
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+  };
+
+  overlay.addEventListener("keydown", handleKeyDown);
+
+  // ── Cancel button ──
+  modal.querySelector("#cancel-task").addEventListener("click", closeModal);
+
+  // ── Create button ──
+  modal.querySelector("#create-task").addEventListener("click", () => {
     const title = modal.querySelector("#task-title").value.trim();
-    if (!title) return alert("Task name is required");
+    if (!title) {
+      titleInput.focus();
+      titleInput.setAttribute("aria-invalid", "true");
+      return alert("Task name is required");
+    }
 
     const priority =
       modal.querySelector(".priority-buttons .active")?.dataset.priority;
@@ -57,36 +113,52 @@ export function createTaskModal(columnId) {
     const month = modal.querySelector("#deadline-month").value;
     const day = modal.querySelector("#deadline-day").value;
     const year = modal.querySelector("#deadline-year").value;
-    
-    const deadline = 
+
+    const deadline =
       month && day && year ? `${year}-${month}-${day}` : null;
 
     document.dispatchEvent(
       new CustomEvent("create-task", {
-        detail: {
-          title,
-          priority,
-          deadline,
-          columnId,
-        },
+        detail: { title, priority, deadline, columnId },
       })
     );
 
-    overlay.remove();
-  }
+    closeModal();
+  });
 }
 
-
+// ── Returns all keyboard-focusable elements inside a container ──
+function getFocusableElements(container) {
+  return Array.from(
+    container.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )
+  ).filter((el) => !el.disabled && el.offsetParent !== null);
+}
 
 function setupPriorityButtons() {
   document.querySelectorAll(".priority-buttons button").forEach((btn) => {
-    btn.onclick = () => {
-      btn.parentElement
-        .querySelectorAll("button")
-        .forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-    };
+    // Click handler
+    btn.addEventListener("click", () => activatePriority(btn));
+
+    // ── Enter / Space already trigger click on buttons natively,
+    //    but we add keydown for explicit Space handling on some browsers ──
+    btn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        activatePriority(btn);
+      }
+    });
   });
+}
+
+function activatePriority(activeBtn) {
+  activeBtn.parentElement.querySelectorAll("button").forEach((b) => {
+    b.classList.remove("active");
+    b.setAttribute("aria-pressed", "false");
+  });
+  activeBtn.classList.add("active");
+  activeBtn.setAttribute("aria-pressed", "true");
 }
 
 function setupDeadlineOptions() {
@@ -98,11 +170,11 @@ function setupDeadlineOptions() {
     .forEach((m) => month.add(new Option(m || "Month", m)));
 
   day.add(new Option("Day", ""));
-
-  for (let d = 1; d <= 31; d++) 
+  for (let d = 1; d <= 31; d++)
     day.add(new Option(d, String(d).padStart(2, "0")));
-  
+
   const currentYear = new Date().getFullYear();
+  year.add(new Option("Year", ""));
   for (let y = currentYear; y <= currentYear + 5; y++)
     year.add(new Option(y, y));
 }

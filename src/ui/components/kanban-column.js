@@ -5,6 +5,7 @@ export function createColumn({ id, title }, tasks = [], boardId) {
   const columnClassModifier = title.toLowerCase().replace(/\s+/g, "-");
   section.className = `kanban-column kanban-column--${columnClassModifier}`;
   section.dataset.columnId = id;
+  section.setAttribute("aria-label", `${title} column`);
 
   const header = document.createElement("div");
   header.className = "kanban-column__header";
@@ -16,6 +17,7 @@ export function createColumn({ id, title }, tasks = [], boardId) {
   const icon = document.createElement("i");
   icon.setAttribute("data-lucide", iconName);
   icon.className = "kanban-column__icon";
+  icon.setAttribute("aria-hidden", "true");
 
   const titleText = document.createElement("h3");
   titleText.className = "kanban-column__title";
@@ -26,25 +28,37 @@ export function createColumn({ id, title }, tasks = [], boardId) {
 
   const addButton = document.createElement("button");
   addButton.className = "kanban-column__add-button";
-  addButton.title = "Add task to this column";
-  addButton.innerHTML = `<i data-lucide="plus"></i>`;
+  addButton.setAttribute("aria-label", `Add task to ${title}`);
+  addButton.innerHTML = `<i data-lucide="plus" aria-hidden="true"></i>`;
+
+  // Enter / Space on add button
+  addButton.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      addButton.click();
+    }
+  });
 
   header.appendChild(headerLeft);
   header.appendChild(addButton);
 
   const tasksContainer = document.createElement("div");
   tasksContainer.className = "kanban-column__tasks-container";
+  tasksContainer.setAttribute("role", "list");
+  tasksContainer.setAttribute("aria-label", `${title} tasks`);
 
   tasks.forEach((task) => {
     const taskCard = createTaskCard(task, boardId);
+    taskCard.setAttribute("role", "listitem");
     tasksContainer.appendChild(taskCard);
   });
 
   section.appendChild(header);
   section.appendChild(tasksContainer);
 
-  // Display Pop up to add task
+  // Open create-task modal, tracking what had focus before
   addButton.addEventListener("click", () => {
+    document._lastFocusedBeforeModal = addButton;
     document.dispatchEvent(
       new CustomEvent("open-create-task", {
         detail: { columnId: id },
