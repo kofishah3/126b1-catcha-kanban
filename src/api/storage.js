@@ -205,7 +205,6 @@ export function clearBoardTasks(boardId) {
   }
 }
 
-
 /*****************************************************************************************/
 const BOARDS_KEY = "kanban-boards";
 

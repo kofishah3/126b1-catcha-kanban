@@ -31,7 +31,6 @@ export function createColumn({ id, title }, tasks = [], boardId) {
   addButton.setAttribute("aria-label", `Add task to ${title}`);
   addButton.innerHTML = `<i data-lucide="plus" aria-hidden="true"></i>`;
 
-  // Enter / Space on add button
   addButton.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -56,7 +55,27 @@ export function createColumn({ id, title }, tasks = [], boardId) {
   section.appendChild(header);
   section.appendChild(tasksContainer);
 
-  // Open create-task modal, tracking what had focus before
+  section.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    section.classList.add("kanban-column--drag-over");
+  });
+
+  section.addEventListener("dragleave", () => {
+    section.classList.remove("kanban-column--drag-over");
+  });
+
+  section.addEventListener("drop", (e) => {
+    e.preventDefault();
+    section.classList.remove("kanban-column--drag-over");
+    const taskId = e.dataTransfer.getData("text/plain");
+
+    document.dispatchEvent(
+      new CustomEvent("move-task-to-column", {
+        detail: { taskId, newColumnId: id },
+      }),
+    );
+  });
+
   addButton.addEventListener("click", () => {
     document._lastFocusedBeforeModal = addButton;
     document.dispatchEvent(

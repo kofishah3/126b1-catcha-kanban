@@ -1,14 +1,44 @@
 import { createColumn } from "./ui/components/kanban-column.js";
-import { getBoards, addBoard, addTask, getTasks, deleteTask, moveTask, deleteBoard } from "./api/storage.js";
+import {
+  getBoards,
+  addBoard,
+  addTask,
+  getTasks,
+  deleteTask,
+  moveTask,
+  deleteBoard,
+} from "./api/storage.js";
 import { createKanbanBoardModal } from "./ui/components/kanban-board-modal.js";
 import { createTaskModal } from "./ui/components/task-modal.js";
 
 const APP_ELEMENT = document.getElementById("app");
 const BOARDS_NAV_ELEMENT = document.getElementById("boards-nav");
 const BOARD_TITLE_ELEMENT = document.getElementById("board-title");
+const SIDEBAR_ELEMENT = document.getElementById("sidebar");
+const SIDEBAR_TOGGLE_BUTTON = document.getElementById("sidebar-toggle");
+const SIDEBAR_OVERLAY_ELEMENT = document.getElementById("sidebar-overlay");
 
-// Loading boards
 let BOARDS = getBoards();
+
+function toggleSidebar() {
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    SIDEBAR_ELEMENT.classList.toggle("sidebar--active");
+    SIDEBAR_OVERLAY_ELEMENT.classList.toggle("sidebar-overlay--active");
+  } else {
+    SIDEBAR_ELEMENT.classList.toggle("sidebar--collapsed");
+  }
+}
+
+function closeSidebarOnMobile() {
+  if (window.innerWidth <= 768) {
+    SIDEBAR_ELEMENT.classList.remove("sidebar--active");
+    SIDEBAR_OVERLAY_ELEMENT.classList.remove("sidebar-overlay--active");
+  }
+}
+
+SIDEBAR_TOGGLE_BUTTON.addEventListener("click", toggleSidebar);
+SIDEBAR_OVERLAY_ELEMENT.addEventListener("click", closeSidebarOnMobile);
 
 if (BOARDS.length === 0) {
   const defaultBoard = addBoard("Main Board");
@@ -17,14 +47,12 @@ if (BOARDS.length === 0) {
 
 let currentBoardId = BOARDS[0].id;
 
-// Fixed Columns
 const COLUMNS = [
   { id: "to-do", title: "To Do" },
   { id: "doing", title: "Doing" },
   { id: "done", title: "Done" },
 ];
 
-// Renderer
 function renderBoardsNav() {
   if (!BOARDS_NAV_ELEMENT) return;
 
@@ -37,7 +65,6 @@ function renderBoardsNav() {
     link.className = `board-link ${isActive ? "board-link--active" : ""}`;
     link.dataset.boardId = board.id;
 
-    // Keyboard accessibility for board links
     link.setAttribute("tabindex", "0");
     link.setAttribute("role", "button");
     link.setAttribute("aria-label", `Switch to board: ${board.name}`);
@@ -52,11 +79,11 @@ function renderBoardsNav() {
     text.textContent = board.name;
     link.appendChild(text);
 
-    // Switch board on click or Enter/Space
     const switchBoard = () => {
       currentBoardId = board.id;
       renderBoardsNav();
       renderBoard();
+      closeSidebarOnMobile();
     };
 
     link.addEventListener("click", switchBoard);
@@ -67,8 +94,6 @@ function renderBoardsNav() {
       }
     });
 
-    // ── Delete board button ──
-    // Only show delete button if there's more than 1 board
     if (BOARDS.length > 1) {
       const deleteBtn = document.createElement("button");
       deleteBtn.className = "board-link__delete-button";
@@ -76,14 +101,15 @@ function renderBoardsNav() {
       deleteBtn.innerHTML = `<i data-lucide="trash-2" aria-hidden="true"></i>`;
 
       deleteBtn.addEventListener("click", (e) => {
-        e.stopPropagation(); // prevent switching to the board when deleting
-        const confirmed = confirm(`Delete board "${board.name}"? This will also delete all its tasks.`);
+        e.stopPropagation();
+        const confirmed = confirm(
+          `Delete board "${board.name}"? This will also delete all its tasks.`,
+        );
         if (!confirmed) return;
 
         deleteBoard(board.id);
         BOARDS = BOARDS.filter((b) => b.id !== board.id);
 
-        // If we deleted the active board, switch to the first remaining one
         if (currentBoardId === board.id) {
           currentBoardId = BOARDS[0].id;
         }
@@ -137,7 +163,6 @@ function renderBoard() {
   if (window.lucide) window.lucide.createIcons();
 }
 
-// LOGIC: Adding new Kanban Board
 const ADD_BOARD_BUTTON = document.getElementById("add-board-button");
 ADD_BOARD_BUTTON.addEventListener("click", () => {
   document._lastFocusedBeforeModal = ADD_BOARD_BUTTON;
@@ -153,9 +178,8 @@ document.addEventListener("create-board", (e) => {
   renderBoard();
 });
 
-// LOGIC: Adding new task
 const UNIVERSAL_ADD_TASK_BUTTON = document.getElementById(
-  "universal-add-task-button"
+  "universal-add-task-button",
 );
 
 UNIVERSAL_ADD_TASK_BUTTON.addEventListener("click", () => {
@@ -163,7 +187,6 @@ UNIVERSAL_ADD_TASK_BUTTON.addEventListener("click", () => {
   createTaskModal("to-do");
 });
 
-// LOGIC: Adding new task to specific column
 document.addEventListener("create-task", (e) => {
   addTask(currentBoardId, {
     title: e.detail.title,
@@ -176,24 +199,27 @@ document.addEventListener("create-task", (e) => {
   renderBoard();
 });
 
-// LOGIC: Delete Task
 document.addEventListener("delete-task", (e) => {
   deleteTask(currentBoardId, e.detail.taskId);
   renderBoard();
 });
 
-// LOGIC: Move Task
 document.addEventListener("move-task", (e) => {
   const tasks = getTasks(currentBoardId);
-  const task = tasks.find(t => t.id === e.detail.taskId);
+  const task = tasks.find((t) => t.id === e.detail.taskId);
 
   if (!task) return;
 
-  const columnIndex = COLUMNS.findIndex(col => col.id === task.columnId);
+  const columnIndex = COLUMNS.findIndex((col) => col.id === task.columnId);
   if (columnIndex === -1 || columnIndex === COLUMNS.length - 1) return;
 
   const nextColumnId = COLUMNS[columnIndex + 1].id;
   moveTask(currentBoardId, task.id, nextColumnId);
+  renderBoard();
+});
+
+document.addEventListener("move-task-to-column", (e) => {
+  moveTask(currentBoardId, e.detail.taskId, e.detail.newColumnId);
   renderBoard();
 });
 

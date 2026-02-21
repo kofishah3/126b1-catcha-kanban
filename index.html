@@ -19,9 +19,12 @@
           <i data-lucide="paw-print" aria-hidden="true"></i>
           <span class="logo__text">Team CATcha</span>
         </div>
-        <div class="boards-list" id="boards-nav" role="list" aria-label="Your boards">
-          <!-- boards are rendered here, in js currently -->
-        </div>
+        <div
+          class="boards-list"
+          id="boards-nav"
+          role="list"
+          aria-label="Your boards"
+        ></div>
         <button
           class="add-board-button"
           id="add-board-button"
@@ -34,6 +37,13 @@
       <main class="main-content" id="main-content">
         <header class="header" role="banner">
           <div class="header__left">
+            <button
+              class="header__menu-button"
+              id="sidebar-toggle"
+              aria-label="Toggle sidebar"
+            >
+              <i data-lucide="menu" aria-hidden="true"></i>
+            </button>
             <h1 class="header__title" id="board-title">Kanban Board</h1>
             <button
               class="header__add-task-button"
@@ -50,13 +60,23 @@
               id="settings-button"
               aria-label="Open board settings"
             >
-              <i data-lucide="settings" class="header__settings-icon" aria-hidden="true"></i>
+              <i
+                data-lucide="settings"
+                class="header__settings-icon"
+                aria-hidden="true"
+              ></i>
             </button>
           </div>
         </header>
 
-        <div class="kanban-view" id="app" role="region" aria-label="Kanban board"></div>
+        <div
+          class="kanban-view"
+          id="app"
+          role="region"
+          aria-label="Kanban board"
+        ></div>
       </main>
+      <div class="sidebar-overlay" id="sidebar-overlay"></div>
     </div>
     <script type="module" src="./src/main.js"></script>
   </body>
