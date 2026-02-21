@@ -1,0 +1,66 @@
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: var(--spacing-sm);
+}
+
+.modal-actions button {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+#cancel-board {
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  color: var(--text-muted);
+}
+
+#cancel-board:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: #bdbdbd;
+}
+
+#create-board {
+  background-color: var(--text-primary);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#create-board:hover {
+  background-color: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+#create-board:active {
+  transform: translateY(0);
+}
+
+input[type="text"] {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+input[type="text"]::placeholder {
+  color: var(--text-muted);
+}
+
+input[type="text"]:hover {
+  border-color: #bdbdbd;
+}

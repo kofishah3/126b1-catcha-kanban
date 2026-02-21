@@ -1,4 +1,4 @@
-export function createTaskModal(columnId) {
+export async function createTaskModal(columnId) {
   const overlay = document.createElement("div");
   overlay.className = "modal-overlay";
   overlay.setAttribute("role", "dialog");
@@ -8,43 +8,12 @@ export function createTaskModal(columnId) {
   const modal = document.createElement("div");
   modal.className = "task-modal";
 
-  modal.innerHTML = `
-    <h2 id="task-modal-title">Create Task</h2>
+  if (!createTaskModal.template) {
+    const response = await fetch("./src/components/task-modal/task-modal.html");
+    createTaskModal.template = await response.text();
+  }
 
-    <label>
-      Task Name
-      <input
-        type="text"
-        id="task-title"
-        placeholder="Enter task name"
-        aria-label="Task name"
-        aria-required="true"
-      />
-    </label>
-
-    <label>
-      Priority
-      <div class="priority-buttons" role="group" aria-label="Select task priority">
-        <button data-priority="Low" aria-pressed="false" aria-label="Set priority to Low">Low</button>
-        <button data-priority="Medium" class="active" aria-pressed="true" aria-label="Set priority to Medium">Medium</button>
-        <button data-priority="High" aria-pressed="false" aria-label="Set priority to High">High</button>
-      </div>
-    </label>
-
-    <label>
-      Deadline
-      <div class="deadline-selects">
-        <select id="deadline-month" aria-label="Deadline month"></select>
-        <select id="deadline-day" aria-label="Deadline day"></select>
-        <select id="deadline-year" aria-label="Deadline year"></select>
-      </div>
-    </label>
-
-    <div class="modal-actions">
-      <button id="cancel-task" aria-label="Cancel and close modal">Cancel</button>
-      <button id="create-task" aria-label="Create task">Create</button>
-    </div>
-  `;
+  modal.innerHTML = createTaskModal.template;
 
   overlay.appendChild(modal);
   document.body.appendChild(overlay);

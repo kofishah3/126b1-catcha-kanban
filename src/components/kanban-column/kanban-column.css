@@ -1,0 +1,124 @@
+.kanban-view {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+}
+
+.kanban-board {
+  display: flex;
+  flex: 1;
+  padding: var(--spacing-lg);
+  gap: var(--spacing-lg);
+  overflow-x: auto;
+  align-items: stretch;
+}
+
+.kanban-column {
+  width: 400px;
+  min-width: 280px;
+  background-color: var(--bg-column);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.kanban-column__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.kanban-column__header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.kanban-column__title {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kanban-column__icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.5px;
+}
+
+.kanban-column__add-button {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+  color: inherit;
+  opacity: 0.6;
+}
+
+.kanban-column__add-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  opacity: 1;
+}
+
+.kanban-column__add-button svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.5px;
+}
+
+.kanban-column--to-do {
+  background: var(--todo-bg);
+}
+.kanban-column--to-do .kanban-column__header {
+  background-color: #ffd6d6;
+  color: #d63031;
+}
+
+.kanban-column--doing {
+  background: var(--doing-bg);
+}
+.kanban-column--doing .kanban-column__header {
+  background-color: #fff3bf;
+  color: #f0932b;
+}
+
+.kanban-column--done {
+  background: var(--done-bg);
+}
+.kanban-column--done .kanban-column__header {
+  background-color: #c3fae8;
+  color: #00b894;
+}
+
+.kanban-column__tasks-container {
+  flex: 1;
+  padding: var(--spacing-md);
+  min-height: 100px;
+  overflow-y: auto;
+}
+
+.kanban-column--drag-over {
+  outline: 2px dashed var(--text-muted);
+}
+
+.kanban-column__add-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.05);
+}

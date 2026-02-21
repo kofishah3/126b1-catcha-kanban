@@ -1,4 +1,4 @@
-import { createColumn } from "./ui/components/kanban-column.js";
+import { createColumn } from "./components/kanban-column/kanban-column.js";
 import {
   getBoards,
   addBoard,
@@ -8,8 +8,8 @@ import {
   moveTask,
   deleteBoard,
 } from "./api/storage.js";
-import { createKanbanBoardModal } from "./ui/components/kanban-board-modal.js";
-import { createTaskModal } from "./ui/components/task-modal.js";
+import { createKanbanBoardModal } from "./components/kanban-board-modal/kanban-board-modal.js";
+import { createTaskModal } from "./components/task-modal/task-modal.js";
 
 const APP_ELEMENT = document.getElementById("app");
 const BOARDS_NAV_ELEMENT = document.getElementById("boards-nav");
@@ -79,10 +79,10 @@ function renderBoardsNav() {
     text.textContent = board.name;
     link.appendChild(text);
 
-    const switchBoard = () => {
+    const switchBoard = async () => {
       currentBoardId = board.id;
       renderBoardsNav();
-      renderBoard();
+      await renderBoard();
       closeSidebarOnMobile();
     };
 
@@ -100,7 +100,7 @@ function renderBoardsNav() {
       deleteBtn.setAttribute("aria-label", `Delete board: ${board.name}`);
       deleteBtn.innerHTML = `<i data-lucide="trash-2" aria-hidden="true"></i>`;
 
-      deleteBtn.addEventListener("click", (e) => {
+      deleteBtn.addEventListener("click", async (e) => {
         e.stopPropagation();
         const confirmed = confirm(
           `Delete board "${board.name}"? This will also delete all its tasks.`,
@@ -115,7 +115,7 @@ function renderBoardsNav() {
         }
 
         renderBoardsNav();
-        renderBoard();
+        await renderBoard();
       });
 
       deleteBtn.addEventListener("keydown", (e) => {
@@ -134,7 +134,7 @@ function renderBoardsNav() {
   if (window.lucide) window.lucide.createIcons();
 }
 
-function renderBoard() {
+async function renderBoard() {
   if (!APP_ELEMENT) return;
 
   const currentBoard = BOARDS.find((board) => board.id === currentBoardId);
@@ -151,11 +151,15 @@ function renderBoard() {
 
   const boardTasks = getTasks(currentBoardId);
 
-  COLUMNS.forEach((column) => {
+  const columnPromises = COLUMNS.map((column) => {
     const columnTasks = boardTasks.filter(
       (task) => task.columnId === column.id,
     );
-    const columnElement = createColumn(column, columnTasks, currentBoardId);
+    return createColumn(column, columnTasks, currentBoardId);
+  });
+
+  const columnElements = await Promise.all(columnPromises);
+  columnElements.forEach((columnElement) => {
     boardContainer.appendChild(columnElement);
   });
 
@@ -169,13 +173,13 @@ ADD_BOARD_BUTTON.addEventListener("click", () => {
   createKanbanBoardModal();
 });
 
-document.addEventListener("create-board", (e) => {
+document.addEventListener("create-board", async (e) => {
   const newBoard = addBoard(e.detail.name);
   BOARDS.push(newBoard);
   currentBoardId = newBoard.id;
 
   renderBoardsNav();
-  renderBoard();
+  await renderBoard();
 });
 
 const UNIVERSAL_ADD_TASK_BUTTON = document.getElementById(
@@ -187,7 +191,7 @@ UNIVERSAL_ADD_TASK_BUTTON.addEventListener("click", () => {
   createTaskModal("to-do");
 });
 
-document.addEventListener("create-task", (e) => {
+document.addEventListener("create-task", async (e) => {
   addTask(currentBoardId, {
     title: e.detail.title,
     columnId: e.detail.columnId,
@@ -196,15 +200,15 @@ document.addEventListener("create-task", (e) => {
     createdAt: new Date().toISOString(),
   });
 
-  renderBoard();
+  await renderBoard();
 });
 
-document.addEventListener("delete-task", (e) => {
+document.addEventListener("delete-task", async (e) => {
   deleteTask(currentBoardId, e.detail.taskId);
-  renderBoard();
+  await renderBoard();
 });
 
-document.addEventListener("move-task", (e) => {
+document.addEventListener("move-task", async (e) => {
   const tasks = getTasks(currentBoardId);
   const task = tasks.find((t) => t.id === e.detail.taskId);
 
@@ -215,25 +219,25 @@ document.addEventListener("move-task", (e) => {
 
   const nextColumnId = COLUMNS[columnIndex + 1].id;
   moveTask(currentBoardId, task.id, nextColumnId);
-  renderBoard();
+  await renderBoard();
 });
 
-document.addEventListener("move-task-to-column", (e) => {
+document.addEventListener("move-task-to-column", async (e) => {
   moveTask(currentBoardId, e.detail.taskId, e.detail.newColumnId);
-  renderBoard();
+  await renderBoard();
 });
 
 document.addEventListener("open-create-task", (e) => {
   createTaskModal(e.detail.columnId);
 });
 
-document.addEventListener("refresh-board", () => {
-  renderBoard();
+document.addEventListener("refresh-board", async () => {
+  await renderBoard();
 });
 
-function initializeApp() {
+async function initializeApp() {
   renderBoardsNav();
-  renderBoard();
+  await renderBoard();
 
   if (window.lucide) {
     window.lucide.createIcons();
