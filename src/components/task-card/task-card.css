@@ -52,7 +52,7 @@
   cursor: pointer;
 }
 
-.task-card__delete-button svg {
+.task-card__delete-icon {
   width: 16px;
   height: 16px;
 }
@@ -67,7 +67,7 @@
   justify-content: center;
 }
 
-.task-card__move-button svg {
+.task-card__move-icon {
   width: 20px;
   height: 20px;
 }
@@ -91,8 +91,8 @@
   color: var(--text-muted);
 }
 
-.task-card__date svg,
-.task-card__deadline svg {
+.task-card__date-icon,
+.task-card__deadline-icon {
   width: 14px;
   height: 14px;
 }

@@ -14,7 +14,7 @@ export class TaskCard {
   async createElement() {
     const { id, title, deadline, priority } = this.task;
     const $card = document.createElement("div");
-    $card.className = "task-card";
+    $card.className = "task-card focus-none";
     $card.dataset.taskId = id;
     $card.setAttribute("tabindex", "0");
     $card.setAttribute("role", "article");

@@ -22,7 +22,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
 
-  <body>
+  <body class="page-body">
     <div class="app-container" id="app-container">
       <nav class="sidebar" id="sidebar" aria-label="Boards navigation">
         <div class="logo" aria-hidden="false">
@@ -36,7 +36,7 @@
           aria-label="Your boards"
         ></div>
         <button
-          class="add-board-button"
+          class="add-board-button focus-none focus-ring"
           id="add-board-button"
           aria-label="Add new Kanban board"
         >
@@ -48,25 +48,35 @@
         <header class="header" role="banner">
           <div class="header__left">
             <button
-              class="header__menu-button"
+              class="header__menu-button focus-none focus-ring"
               id="sidebar-toggle"
               aria-label="Toggle sidebar"
             >
-              <i data-lucide="menu" aria-hidden="true"></i>
+              <i
+                data-lucide="menu"
+                class="header__menu-icon"
+                aria-hidden="true"
+              ></i>
             </button>
-            <h1 class="header__title" id="board-title">Kanban Board</h1>
+            <h1 class="header__title heading-reset" id="board-title">
+              Kanban Board
+            </h1>
             <button
-              class="header__add-task-button"
+              class="header__add-task-button focus-none"
               id="universal-add-task-button"
               aria-label="Add new task"
             >
-              <i data-lucide="plus" aria-hidden="true"></i>
+              <i
+                data-lucide="plus"
+                class="header__add-task-icon"
+                aria-hidden="true"
+              ></i>
               <span>Add Task</span>
             </button>
           </div>
           <div class="header__right">
             <button
-              class="header__settings-button"
+              class="header__settings-button focus-none"
               id="settings-button"
               aria-label="Open board settings"
             >

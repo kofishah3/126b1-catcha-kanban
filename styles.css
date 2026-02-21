@@ -45,7 +45,7 @@
   --focus-ring-offset: 2px;
 }
 
-body {
+.page-body {
   font-family: var(--font-sans);
   color: var(--text-primary);
   background-color: var(--bg-primary);
@@ -56,12 +56,7 @@ body {
   overflow: hidden;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+.heading-reset {
   margin: 0px;
 }
 
@@ -124,7 +119,7 @@ h6 {
   color: var(--text-primary);
 }
 
-.header__menu-button svg {
+.header__menu-icon {
   width: 24px;
   height: 24px;
 }
@@ -205,7 +200,7 @@ h6 {
   color: #ff6b6b;
 }
 
-.board-link__delete-button svg {
+.board-link__delete-icon {
   width: 14px;
   height: 14px;
 }
@@ -237,10 +232,6 @@ h6 {
   color: var(--text-light);
   border-style: solid;
   border-color: transparent;
-}
-
-p {
-  font-family: var(--font-sans);
 }
 
 .header {
@@ -323,7 +314,7 @@ p {
   transform: translateY(0);
 }
 
-.header__add-task-button svg {
+.header__add-task-icon {
   width: 16px;
   height: 16px;
   stroke-width: 3px;
@@ -354,19 +345,17 @@ p {
   z-index: 1000;
 }
 
-*:focus {
+.focus-none:focus {
   outline: none;
 }
 
-*:focus-visible {
+.focus-ring:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: var(--focus-ring-offset);
   border-radius: var(--radius-sm);
 }
 
-input[type="text"]:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
+.focus-ring-input:focus-visible {
   outline: none;
   border-color: var(--focus-ring);
   box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
@@ -416,7 +405,7 @@ textarea:focus-visible {
     margin-left: var(--spacing-sm);
   }
 
-  .header__add-task-button svg {
+  .header__add-task-icon {
     margin: 0 auto;
   }
 

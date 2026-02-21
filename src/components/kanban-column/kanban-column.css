@@ -75,7 +75,7 @@
   opacity: 1;
 }
 
-.kanban-column__add-button svg {
+.kanban-column__add-icon {
   width: 18px;
   height: 18px;
   stroke-width: 2.5px;

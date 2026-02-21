@@ -1,20 +1,22 @@
-<h2 id="task-modal-title">Create Task</h2>
+<h2 id="task-modal-title" class="task-modal__heading">Create Task</h2>
 
-<label>
+<label class="task-modal__label">
   Task Name
   <input
     type="text"
     id="task-title"
+    class="task-modal__input"
     placeholder="Enter task name"
     aria-label="Task name"
     aria-required="true"
   />
 </label>
 
-<label>
+<label class="task-modal__label">
   Priority
   <div class="priority-buttons" role="group" aria-label="Select task priority">
     <button
+      class="priority-buttons__button priority-buttons__button--low"
       data-priority="Low"
       aria-pressed="false"
       aria-label="Set priority to Low"
@@ -22,14 +24,15 @@
       Low
     </button>
     <button
+      class="priority-buttons__button priority-buttons__button--medium priority-buttons__button--active"
       data-priority="Medium"
-      class="active"
       aria-pressed="true"
       aria-label="Set priority to Medium"
     >
       Medium
     </button>
     <button
+      class="priority-buttons__button priority-buttons__button--high"
       data-priority="High"
       aria-pressed="false"
       aria-label="Set priority to High"
@@ -39,16 +42,40 @@
   </div>
 </label>
 
-<label>
+<label class="task-modal__label">
   Deadline
   <div class="deadline-selects">
-    <select id="deadline-month" aria-label="Deadline month"></select>
-    <select id="deadline-day" aria-label="Deadline day"></select>
-    <select id="deadline-year" aria-label="Deadline year"></select>
+    <select
+      id="deadline-month"
+      class="deadline-selects__select"
+      aria-label="Deadline month"
+    ></select>
+    <select
+      id="deadline-day"
+      class="deadline-selects__select"
+      aria-label="Deadline day"
+    ></select>
+    <select
+      id="deadline-year"
+      class="deadline-selects__select"
+      aria-label="Deadline year"
+    ></select>
   </div>
 </label>
 
 <div class="modal-actions">
-  <button id="cancel-task" aria-label="Cancel and close modal">Cancel</button>
-  <button id="create-task" aria-label="Create task">Create</button>
+  <button
+    id="cancel-task"
+    class="modal-actions__button modal-actions__button--cancel"
+    aria-label="Cancel and close modal"
+  >
+    Cancel
+  </button>
+  <button
+    id="create-task"
+    class="modal-actions__button modal-actions__button--create"
+    aria-label="Create task"
+  >
+    Create
+  </button>
 </div>

@@ -1,10 +1,13 @@
-<h2 id="board-modal-title">Create Kanban Board</h2>
+<h2 id="board-modal-title" class="kanban-board-modal__title">
+  Create Kanban Board
+</h2>
 
-<label>
+<label class="kanban-board-modal__label">
   Board Name
   <input
     type="text"
     id="board-name"
+    class="kanban-board-modal__input"
     placeholder="Enter board name"
     aria-label="Board name"
     aria-required="true"
@@ -12,6 +15,18 @@
 </label>
 
 <div class="modal-actions">
-  <button id="cancel-board" aria-label="Cancel and close modal">Cancel</button>
-  <button id="create-board" aria-label="Create board">Create</button>
+  <button
+    id="cancel-board"
+    class="modal-actions__button modal-actions__button--cancel"
+    aria-label="Cancel and close modal"
+  >
+    Cancel
+  </button>
+  <button
+    id="create-board"
+    class="modal-actions__button modal-actions__button--create"
+    aria-label="Create board"
+  >
+    Create
+  </button>
 </div>

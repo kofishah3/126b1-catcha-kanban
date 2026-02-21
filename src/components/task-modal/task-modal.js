@@ -69,8 +69,8 @@ export async function createTaskModal(columnId) {
       return alert("Task name is required");
     }
 
-    const priority = modal.querySelector(".priority-buttons .active")?.dataset
-      .priority;
+    const priority = modal.querySelector(".priority-buttons__button--active")
+      ?.dataset.priority;
 
     const month = modal.querySelector("#deadline-month").value;
     const day = modal.querySelector("#deadline-day").value;
@@ -97,7 +97,7 @@ function getFocusableElements(container) {
 }
 
 function setupPriorityButtons() {
-  document.querySelectorAll(".priority-buttons button").forEach((btn) => {
+  document.querySelectorAll(".priority-buttons__button").forEach((btn) => {
     btn.addEventListener("click", () => activatePriority(btn));
 
     btn.addEventListener("keydown", (e) => {
@@ -110,11 +110,13 @@ function setupPriorityButtons() {
 }
 
 function activatePriority(activeBtn) {
-  activeBtn.parentElement.querySelectorAll("button").forEach((b) => {
-    b.classList.remove("active");
-    b.setAttribute("aria-pressed", "false");
-  });
-  activeBtn.classList.add("active");
+  activeBtn.parentElement
+    .querySelectorAll(".priority-buttons__button")
+    .forEach((b) => {
+      b.classList.remove("priority-buttons__button--active");
+      b.setAttribute("aria-pressed", "false");
+    });
+  activeBtn.classList.add("priority-buttons__button--active");
   activeBtn.setAttribute("aria-pressed", "true");
 }
 
