@@ -31,11 +31,9 @@ export function createKanbanBoardModal() {
   overlay.appendChild(modal);
   document.body.appendChild(overlay);
 
-  // ── Auto-focus the Board Name input when modal opens ──
   const nameInput = modal.querySelector("#board-name");
   requestAnimationFrame(() => nameInput.focus());
 
-  // ── Close helper ──
   const closeModal = () => {
     overlay.remove();
     if (document._lastFocusedBeforeModal) {
@@ -44,7 +42,6 @@ export function createKanbanBoardModal() {
     }
   };
 
-  // ── Escape closes modal; Tab stays trapped inside ──
   overlay.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       e.preventDefault();
@@ -71,10 +68,8 @@ export function createKanbanBoardModal() {
     }
   });
 
-  // ── Cancel ──
   modal.querySelector("#cancel-board").addEventListener("click", closeModal);
 
-  // ── Create ──
   modal.querySelector("#create-board").addEventListener("click", () => {
     const name = nameInput.value.trim();
     if (!name) {
@@ -84,13 +79,12 @@ export function createKanbanBoardModal() {
     }
 
     document.dispatchEvent(
-      new CustomEvent("create-board", { detail: { name } })
+      new CustomEvent("create-board", { detail: { name } }),
     );
 
     closeModal();
   });
 
-  // ── Enter inside the input triggers Create ──
   nameInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -102,7 +96,7 @@ export function createKanbanBoardModal() {
 function getFocusableElements(container) {
   return Array.from(
     container.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    )
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    ),
   ).filter((el) => !el.disabled && el.offsetParent !== null);
 }

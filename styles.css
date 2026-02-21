@@ -1,9 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@500;600;700&display=swap");
 
-/* ===== CSS Variables (Design Tokens) ===== */
 :root {
-  /* colors */
   --bg-primary: #fffefc;
   --bg-secondary: #f8f3ec;
   --bg-card: #e6e2dc;
@@ -16,7 +14,6 @@
   --button-hover-white: #fffffc4f;
   --button-hover-colored: #ffc0784f;
 
-  /* typography */
   --font-sans: "Inter", sans-serif;
   --font-heading: "Outfit", sans-serif;
 
@@ -27,7 +24,6 @@
   --done-accent: #1dd1a1;
   --done-bg: linear-gradient(135deg, #e6fff8 0%, #fef9f3 100%);
 
-  /* other styles */
   --spacing-xs: 0.5rem;
   --spacing-sm: 0.75rem;
   --spacing-md: 1rem;
@@ -45,12 +41,10 @@
   --transition-fast: 150ms ease;
   --transition-normal: 250ms ease;
 
-  /* ── Accessibility: focus ring color ── */
   --focus-ring: #ff6b6b;
   --focus-ring-offset: 2px;
 }
 
-/* base styles */
 body {
   font-family: var(--font-sans);
   color: var(--text-primary);
@@ -71,7 +65,6 @@ h6 {
   margin: 0px;
 }
 
-/* layout */
 .app-container {
   display: flex;
   height: 100vh;
@@ -87,6 +80,20 @@ h6 {
   padding: var(--spacing-md);
   padding-right: var(--spacing-lg);
   flex-shrink: 0;
+  transition:
+    transform var(--transition-normal),
+    width var(--transition-normal),
+    padding var(--transition-normal);
+  z-index: 100;
+  overflow-x: hidden;
+}
+
+.sidebar--collapsed {
+  width: 0;
+  padding-left: 0;
+  padding-right: 0;
+  overflow: hidden;
+  transform: translateX(-100%);
 }
 
 .main-content {
@@ -96,6 +103,30 @@ h6 {
   background-color: var(--bg-primary);
   overflow: hidden;
   position: relative;
+  width: 100%;
+}
+
+.header__menu-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__menu-button:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.header__menu-button svg {
+  width: 24px;
+  height: 24px;
 }
 
 .logo {
@@ -145,7 +176,7 @@ h6 {
 
 .board-link__text {
   font-size: 0.95rem;
-  flex: 1; /* pushes delete button to the right */
+  flex: 1;
 }
 
 .board-link__delete-button {
@@ -159,11 +190,12 @@ h6 {
   border-radius: var(--radius-sm);
   color: var(--text-muted);
   opacity: 0;
-  transition: opacity var(--transition-fast), color var(--transition-fast);
+  transition:
+    opacity var(--transition-fast),
+    color var(--transition-fast);
   flex-shrink: 0;
 }
 
-/* Only show the delete button when hovering the board link */
 .board-link:hover .board-link__delete-button,
 .board-link:focus-within .board-link__delete-button {
   opacity: 1;
@@ -187,26 +219,30 @@ h6 {
 .add-board-button {
   all: unset;
   margin-top: 1rem;
-  padding: var(--spacing-xs);
+  padding: 0.75rem var(--spacing-xs);
   display: flex;
   justify-content: center;
-  border-width: 2px;
-  border-color: var(--button-hover-white);
-  border-style: dotted;
+  border: 1px dashed var(--button-hover-white);
   border-radius: var(--radius-md);
   cursor: pointer;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all var(--transition-fast);
 }
 
 .add-board-button:hover {
   background-color: var(--button-hover-white);
-  transition: var(--transition-normal);
+  color: var(--text-light);
+  border-style: solid;
+  border-color: transparent;
 }
 
 p {
   font-family: var(--font-sans);
 }
 
-/* main header */
 .header {
   height: 64px;
   display: flex;
@@ -263,7 +299,7 @@ p {
   background-color: var(--todo-accent);
   color: white;
   border: none;
-  padding: 6px 16px;
+  padding: 8px 18px;
   border-radius: var(--radius-md);
   font-family: var(--font-heading);
   font-weight: 600;
@@ -272,15 +308,15 @@ p {
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  transition:
-    transform var(--transition-fast),
-    background-color var(--transition-fast);
+  transition: all var(--transition-fast);
   margin-left: var(--spacing-md);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
 }
 
 .header__add-task-button:hover {
   background-color: #ff5252;
   transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.3);
 }
 
 .header__add-task-button:active {
@@ -293,14 +329,19 @@ p {
   stroke-width: 3px;
 }
 
-/* board layout */
+.kanban-view {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+}
+
 .kanban-board {
   display: flex;
-  height: 90vh;
+  flex: 1;
   padding: var(--spacing-lg);
   gap: var(--spacing-lg);
   overflow-x: auto;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .kanban-column {
@@ -312,7 +353,6 @@ p {
   flex-direction: column;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  height: calc(100% - var(--spacing-lg) * 2);
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -372,7 +412,6 @@ p {
   stroke-width: 2.5px;
 }
 
-/* Specific Column Coloring */
 .kanban-column--to-do {
   background: var(--todo-bg);
 }
@@ -404,7 +443,6 @@ p {
   overflow-y: auto;
 }
 
-/* Task Card Styles */
 .task-card {
   background-color: var(--bg-primary);
   padding: var(--spacing-md);
@@ -534,7 +572,6 @@ p {
   color: #1976d2;
 }
 
-/* Modal Styles */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -564,45 +601,92 @@ p {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
 }
 
 .deadline-selects select {
-  border: 1px solid #dbdbdb;
-  padding: var(--spacing-xs);
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border: 1px solid #e0e0e0;
   border-radius: var(--radius-sm);
+  background-color: var(--bg-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23918174' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 input[type="text"],
 textarea {
-  padding: var(--spacing-xs);
-  border-width: 2px;
-  border-style: solid;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
   border-radius: var(--radius-sm);
-  border-color: #dbdbdb;
+  background-color: var(--bg-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
 }
 
 .priority-buttons {
   display: flex;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
+  background-color: var(--bg-secondary);
+  padding: 4px;
+  border-radius: var(--radius-md);
 }
 
 .priority-buttons button {
   flex: 1;
-  padding: var(--spacing-xs);
-  border-radius: var(--radius-sm);
-  border: 1px solid #dbdbdb;
+  padding: 0.5rem;
+  border-radius: calc(var(--radius-md) - 4px);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.85rem;
   cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
 .priority-buttons button:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-hover);
+  color: var(--text-primary);
 }
 
 .priority-buttons .active {
-  background: var(--todo-accent);
-  color: white;
-  border-color: transparent;
+  background: white;
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific color highlight for active state based on priority */
+.priority-buttons button[data-priority="High"].active {
+  color: #d63031;
+}
+.priority-buttons button[data-priority="Medium"].active {
+  color: #f0932b;
+}
+.priority-buttons button[data-priority="Low"].active {
+  color: #1976d2;
 }
 
 .deadline-selects {
@@ -610,53 +694,73 @@ textarea {
   gap: 0.75rem;
 }
 
-.deadline-selects select {
-  cursor: pointer;
+.deadline-selects select:hover,
+input[type="text"]:hover,
+textarea:hover {
+  border-color: #bdbdbd;
 }
 
 .modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+  margin-top: var(--spacing-sm);
 }
 
 .modal-actions button {
-  padding-left: var(--spacing-md);
-  padding-right: var(--spacing-md);
-  padding-top: var(--spacing-xs);
-  padding-bottom: var(--spacing-xs);
-  border-radius: var(--radius-sm);
-  border: 1px solid #dbdbdb;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
   cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
-.modal-actions button:hover {
+#cancel-task,
+#cancel-board {
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  color: var(--text-muted);
+}
+
+#cancel-task:hover,
+#cancel-board:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: #bdbdbd;
+}
+
+#create-task,
+#create-board {
+  background-color: var(--text-primary);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#create-task:hover,
+#create-board:hover {
+  background-color: #333;
   transform: translateY(-1px);
-  box-shadow: var(--shadow-hover);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* =============================================================
-   KEYBOARD ACCESSIBILITY — Focus Styles
-   ============================================================= */
+#create-task:active,
+#create-board:active {
+  transform: translateY(0);
+}
 
-/*
-  Remove the default browser outline globally,
-  then re-apply a beautiful custom one via :focus-visible.
-  :focus-visible only triggers on keyboard navigation,
-  NOT on mouse clicks — so it won't interfere with your design.
-*/
 *:focus {
   outline: none;
 }
 
-/* ── Universal focus ring ── */
 *:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: var(--focus-ring-offset);
   border-radius: var(--radius-sm);
 }
 
-/* ── Task cards get a slightly bigger ring since they're larger ── */
 .task-card:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
@@ -664,7 +768,6 @@ textarea {
   box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15);
 }
 
-/* ── Sidebar board links ── */
 .board-link:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.7);
   outline-offset: 2px;
@@ -672,13 +775,11 @@ textarea {
   color: var(--text-light);
 }
 
-/* ── Add Board button (dark background) ── */
 .add-board-button:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.7);
   outline-offset: 2px;
 }
 
-/* ── Column add (+) button ── */
 .kanban-column__add-button:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
@@ -686,7 +787,6 @@ textarea {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* ── Move & Delete buttons on task cards ── */
 .task-card__move-button:focus-visible,
 .task-card__delete-button:focus-visible {
   outline: 2px solid var(--focus-ring);
@@ -694,28 +794,24 @@ textarea {
   border-radius: var(--radius-sm);
 }
 
-/* ── Priority buttons inside modal ── */
 .priority-buttons button:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
-/* ── Text inputs & selects inside modal ── */
 input[type="text"]:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: none; /* we use border instead for inputs */
+  outline: none;
   border-color: var(--focus-ring);
   box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
 }
 
-/* ── Modal action buttons ── */
 .modal-actions button:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
-/* ── Header buttons ── */
 .header__add-task-button:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
@@ -727,10 +823,67 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
-/* ── Board links in sidebar (may be divs — need explicit focus style) ── */
-.board-link:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.7);
-  outline-offset: 2px;
-  background-color: var(--button-hover-white);
-  color: var(--text-light);
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    box-shadow: 20px 0 50px rgba(0, 0, 0, 0.2);
+    transform: translateX(-100%);
+  }
+
+  .sidebar--active {
+    transform: translateX(0);
+  }
+
+  .kanban-board {
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
+  }
+
+  .kanban-column {
+    width: 85vw;
+    min-width: 280px;
+  }
+
+  .header__title {
+    font-size: 1.1rem;
+  }
+
+  .header__add-task-button span {
+    display: none;
+  }
+
+  .header__add-task-button {
+    padding: 8px;
+    margin-left: var(--spacing-sm);
+  }
+
+  .header__add-task-button svg {
+    margin: 0 auto;
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 90;
+    display: none;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+  }
+
+  .sidebar-overlay--active {
+    display: block;
+    opacity: 1;
+  }
+
+  .board-link__delete-button {
+    opacity: 1;
+  }
 }

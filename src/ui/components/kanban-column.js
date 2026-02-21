@@ -31,7 +31,6 @@ export function createColumn({ id, title }, tasks = [], boardId) {
   addButton.setAttribute("aria-label", `Add task to ${title}`);
   addButton.innerHTML = `<i data-lucide="plus" aria-hidden="true"></i>`;
 
-  // Enter / Space on add button
   addButton.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -56,7 +55,6 @@ export function createColumn({ id, title }, tasks = [], boardId) {
   section.appendChild(header);
   section.appendChild(tasksContainer);
 
-  // Open create-task modal, tracking what had focus before
   addButton.addEventListener("click", () => {
     document._lastFocusedBeforeModal = addButton;
     document.dispatchEvent(

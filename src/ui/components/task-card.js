@@ -5,10 +5,12 @@ export function createTaskCard(
   const card = document.createElement("div");
   card.className = "task-card";
   card.dataset.taskId = id;
-  // Make card itself focusable so users can Tab to it
   card.setAttribute("tabindex", "0");
   card.setAttribute("role", "article");
-  card.setAttribute("aria-label", `Task: ${title}${priority ? `, priority ${priority}` : ""}${deadline ? `, deadline ${deadline}` : ""}`);
+  card.setAttribute(
+    "aria-label",
+    `Task: ${title}${priority ? `, priority ${priority}` : ""}${deadline ? `, deadline ${deadline}` : ""}`,
+  );
 
   const header = document.createElement("div");
   header.className = "task-card__header";
@@ -17,7 +19,6 @@ export function createTaskCard(
   titleText.className = "task-card__title";
   titleText.textContent = title;
 
-  // --- MOVE BUTTON ---
   const moveButton = document.createElement("button");
   moveButton.className = "task-card__move-button";
   moveButton.setAttribute("aria-label", `Move task "${title}" to next status`);
@@ -31,7 +32,6 @@ export function createTaskCard(
     );
   });
 
-  // Enter / Space on move button (buttons natively handle this, but being explicit)
   moveButton.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -39,7 +39,6 @@ export function createTaskCard(
     }
   });
 
-  // --- DELETE BUTTON ---
   const deleteButton = document.createElement("button");
   deleteButton.className = "task-card__delete-button";
   deleteButton.setAttribute("aria-label", `Delete task "${title}"`);
@@ -60,24 +59,16 @@ export function createTaskCard(
     }
   });
 
-  // Add buttons to wrapper
   const actions = document.createElement("div");
   actions.className = "task-card__actions";
   actions.appendChild(moveButton);
   actions.appendChild(deleteButton);
 
-  // Add title + actions to header
   header.appendChild(titleText);
   header.appendChild(actions);
 
-  // --- INFO SECTION ---
   const info = document.createElement("div");
   info.className = "task-card__info";
-
-  const dateMade = document.createElement("div");
-  dateMade.className = "task-card__date";
-  dateMade.innerHTML = `<i data-lucide="calendar" aria-hidden="true"></i> <span>${createdAt}</span>`;
-  info.appendChild(dateMade);
 
   if (deadline) {
     const deadlineEl = document.createElement("div");
@@ -86,7 +77,6 @@ export function createTaskCard(
     info.appendChild(deadlineEl);
   }
 
-  // --- FOOTER ---
   const footer = document.createElement("div");
   footer.className = "task-card__footer";
 
