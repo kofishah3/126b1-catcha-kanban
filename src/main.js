@@ -10,6 +10,7 @@ import {
 } from "./api/storage.js";
 import { createKanbanBoardModal } from "./components/kanban-board-modal/kanban-board-modal.js";
 import { createTaskModal } from "./components/task-modal/task-modal.js";
+import { createDeleteModal } from "./components/delete-modal/delete-modal.js";
 
 const APP_ELEMENT = document.getElementById("app");
 const BOARDS_NAV_ELEMENT = document.getElementById("boards-nav");
@@ -102,20 +103,23 @@ function renderBoardsNav() {
 
       deleteBtn.addEventListener("click", async (e) => {
         e.stopPropagation();
-        const confirmed = confirm(
-          `Delete board "${board.name}"? This will also delete all its tasks.`,
-        );
-        if (!confirmed) return;
 
-        deleteBoard(board.id);
-        BOARDS = BOARDS.filter((b) => b.id !== board.id);
+        document._lastFocusedBeforeModal = document.activeElement;
+        createDeleteModal({
+          title: "Delete Board",
+          message: `Delete board "${board.name}"? This will also delete all its tasks.`,
+          onConfirm: async () => {
+            deleteBoard(board.id);
+            BOARDS = BOARDS.filter((b) => b.id !== board.id);
 
-        if (currentBoardId === board.id) {
-          currentBoardId = BOARDS[0].id;
-        }
+            if (currentBoardId === board.id) {
+              currentBoardId = BOARDS[0].id;
+            }
 
-        renderBoardsNav();
-        await renderBoard();
+            renderBoardsNav();
+            await renderBoard();
+          },
+        });
       });
 
       deleteBtn.addEventListener("keydown", (e) => {
@@ -204,8 +208,15 @@ document.addEventListener("create-task", async (e) => {
 });
 
 document.addEventListener("delete-task", async (e) => {
-  deleteTask(currentBoardId, e.detail.taskId);
-  await renderBoard();
+  document._lastFocusedBeforeModal = document.activeElement;
+  createDeleteModal({
+    title: "Delete Task",
+    message: "Are you sure you want to delete this task?",
+    onConfirm: async () => {
+      deleteTask(currentBoardId, e.detail.taskId);
+      await renderBoard();
+    },
+  });
 });
 
 document.addEventListener("move-task", async (e) => {

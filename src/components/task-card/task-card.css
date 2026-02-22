@@ -5,6 +5,18 @@
   cursor: grab;
 }
 
+.task-card__title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.task-card__actions {
+  flex-shrink: 0;
+}
+
 .task-card:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-hover);
