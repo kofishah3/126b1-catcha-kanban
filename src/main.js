@@ -222,6 +222,20 @@ document.addEventListener("move-task", async (e) => {
   await renderBoard();
 });
 
+document.addEventListener("move-task-back", async (e) => {
+  const tasks = getTasks(currentBoardId);
+  const task = tasks.find((t) => t.id === e.detail.taskId);
+
+  if (!task) return;
+
+  const columnIndex = COLUMNS.findIndex((col) => col.id === task.columnId);
+  if (columnIndex === -1 || columnIndex === 0) return;
+
+  const prevColumnId = COLUMNS[columnIndex - 1].id;
+  moveTask(currentBoardId, task.id, prevColumnId);
+  await renderBoard();
+});
+
 document.addEventListener("move-task-to-column", async (e) => {
   moveTask(currentBoardId, e.detail.taskId, e.detail.newColumnId);
   await renderBoard();
@@ -246,6 +260,73 @@ async function initializeApp() {
       if (window.lucide) window.lucide.createIcons();
     });
   }
+
+  setupKeyboardShortcuts();
+}
+
+function setupKeyboardShortcuts() {
+  document.addEventListener("keydown", (e) => {
+    // alt + n: new task
+    if (e.altKey && e.key.toLowerCase() === "n") {
+      e.preventDefault();
+      UNIVERSAL_ADD_TASK_BUTTON.click();
+    }
+
+    // alt + s: nav to sidebar
+    if (e.altKey && e.key.toLowerCase() === "s") {
+      e.preventDefault();
+      if (window.innerWidth <= 768) {
+        toggleSidebar();
+      } else {
+        const firstBoard = BOARDS_NAV_ELEMENT.querySelector(".board-link");
+        if (firstBoard) firstBoard.focus();
+        else ADD_BOARD_BUTTON.focus();
+      }
+    }
+
+    // alt + h: nav to header
+    if (e.altKey && e.key.toLowerCase() === "h") {
+      e.preventDefault();
+      SIDEBAR_TOGGLE_BUTTON.focus();
+    }
+
+    // alt + b: add board
+    if (e.altKey && e.key.toLowerCase() === "b") {
+      e.preventDefault();
+      ADD_BOARD_BUTTON.click();
+    }
+  });
+
+  // this makes sure tabbing through loops to beginning instead of focusing out of the site
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Tab" && !e.shiftKey) {
+      const focusables = getFocusableElements();
+      const lastFocusable = focusables[focusables.length - 1];
+
+      if (document.activeElement === lastFocusable) {
+        e.preventDefault();
+        focusables[0].focus();
+      }
+    } else if (e.key === "Tab" && e.shiftKey) {
+      const focusables = getFocusableElements();
+      const firstFocusable = focusables[0];
+
+      if (document.activeElement === firstFocusable) {
+        e.preventDefault();
+        focusables[focusables.length - 1].focus();
+      }
+    }
+  });
+}
+
+function getFocusableElements() {
+  const selectors =
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  const elements = Array.from(document.querySelectorAll(selectors));
+  return elements.filter((el) => {
+    const style = window.getComputedStyle(el);
+    return style.display !== "none" && style.visibility !== "hidden";
+  });
 }
 
 initializeApp();

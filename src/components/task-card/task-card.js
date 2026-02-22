@@ -34,7 +34,7 @@ export class TaskCard {
     $card.querySelector(".task-card__title").textContent = title;
 
     if (deadline) {
-      card.querySelector(".task-card__info").innerHTML = `
+      $card.querySelector(".task-card__info").innerHTML = `
         <div class="task-card__deadline flex items-center text-xs text-todo font-medium">
           <i data-lucide="clock" class="task-card__deadline-icon" aria-hidden="true"></i>
           <span>${deadline}</span>
@@ -61,6 +61,14 @@ export class TaskCard {
       .addEventListener("click", () => {
         document.dispatchEvent(
           new CustomEvent("move-task", { detail: { taskId: id } }),
+        );
+      });
+
+    this.element
+      .querySelector(".task-card__move-back-button")
+      .addEventListener("click", () => {
+        document.dispatchEvent(
+          new CustomEvent("move-task-back", { detail: { taskId: id } }),
         );
       });
 
