@@ -22,10 +22,15 @@
 .task-card__icon {
   width: 18px;
   height: 18px;
+  margin: 5px;
 }
 
 .task-card__move-button:hover {
   color: var(--done-accent);
+}
+
+.task-card__move-back-button:hover {
+  color: var(--doing-accent);
 }
 
 .task-card__info {
@@ -73,6 +78,7 @@
   box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15);
 }
 
+.task-card__move-back-button:focus-visible,
 .task-card__move-button:focus-visible,
 .task-card__delete-button:focus-visible {
   outline: 2px solid var(--focus-ring);

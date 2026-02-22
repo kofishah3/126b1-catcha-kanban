@@ -468,6 +468,9 @@
 .p-lg {
   padding: var(--spacing-lg);
 }
+.p-0 {
+  padding: 0;
+}
 .px-sm {
   padding-left: var(--spacing-sm);
   padding-right: var(--spacing-sm);
