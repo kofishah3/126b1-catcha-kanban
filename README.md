@@ -38,9 +38,14 @@ catcha-kanban/
 1. Download the project folder with all the files.
 2. Run the index.html file with Live Server to open the website.
 
+### Keyboard shortcuts
+1. Alt + s -> focus sidebar
+2. Alt + h -> focus header
+3. Alt + b -> new board
+4. Alt + t -> new task
+
 
 ### Tech Stack
-
 - HTML5
 - CSS3
 - Vanilla JavaScript
