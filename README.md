@@ -35,8 +35,12 @@ catcha-kanban/
 ```
 
 ### How to set-up
-1. Download the project folder with all the files.
-2. Run the index.html file with Live Server to open the website.
+1. Have Git installed.
+2. Open terminal or cmd.
+3. cd path\to\your\folder.
+4. git clone https://github.com/kofishah3/126b1-catcha-kanban.git.
+5. Open folder in visual studio.
+6. Run index.html with live server.
 
 ### Keyboard shortcuts
 1. Alt + s -> focus sidebar
