@@ -5,12 +5,12 @@
 
 ```
 catcha-kanban/
-├── utils/      # Main HTML file
+├── utils/     
 |   ├── dom-utils.js
-├── styles.css      # CSS styles
+├── styles.css     
 ├── src/
 │   ├── main.js     # Main entry point
-|   ├── api/
+|   ├── api/        # API storage
 |       └── storage.js
 │   └── components/
 │       ├── kanban-board-modal/
@@ -31,7 +31,7 @@ catcha-kanban/
 │           └── task-model.js
 ├── .gitignore
 ├──  README.md 
-└── index.html       # This file
+└── index.html       # Open with Live Server to run 
 ```
 
 ### Tech Stack
