@@ -5,15 +5,33 @@
 
 ```
 catcha-kanban/
-├── index.html      # Main HTML file
+├── utils/      # Main HTML file
+|   ├── dom-utils.js
 ├── styles.css      # CSS styles
 ├── src/
 │   ├── main.js     # Main entry point
-│   └── ui/
-│       └── components/
-│           ├── kanban-column.js
+|   ├── api/
+|       └── storage.js
+│   └── components/
+│       ├── kanban-board-modal/
+│           ├── kanban-board-modal.css
+|           ├── kanban-board-modal.html
+│           └── kanban-board-modal.js
+|       ├── kanban-column/
+│           ├── kanban-column.css
+|           ├── kanban-column.html
+│           └── kanban-column.js
+|       ├── task-card/
+│           ├── task-card.css
+|           ├── task-card.html
 │           └── task-card.js
-└── README.md       # This file
+|       └── task-model/
+│           ├── task-model.css
+|           ├── task-model.html
+│           └── task-model.js
+├── .gitignore
+├──  README.md 
+└── index.html       # This file
 ```
 
 ### Tech Stack
