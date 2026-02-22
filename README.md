@@ -34,6 +34,11 @@ catcha-kanban/
 └── index.html       # Open with Live Server to run 
 ```
 
+### How to set-up
+1. Download the project folder with all the files.
+2. Run the index.html file with Live Server to open the website.
+
+
 ### Tech Stack
 
 - HTML5
