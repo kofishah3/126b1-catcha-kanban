@@ -1,17 +1,8 @@
 .task-card {
-  background-color: var(--bg-primary);
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card);
-  margin-bottom: var(--spacing-md);
-  border: 1px solid rgba(0, 0, 0, 0.05);
   transition:
     transform var(--transition-fast),
     box-shadow var(--transition-fast);
   cursor: grab;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
 }
 
 .task-card:hover {
@@ -19,19 +10,8 @@
   box-shadow: var(--shadow-hover);
 }
 
-.task-card__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--spacing-sm);
-}
-
-.task-card__title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0;
-  line-height: 1.4;
+.task-card__delete-button:hover {
+  color: #d63031;
 }
 
 .task-card--dragging {
@@ -39,37 +19,9 @@
   cursor: grabbing;
 }
 
-.task-card__actions {
-  display: flex;
-  gap: 4px;
-}
-
-.task-card__delete-button {
-  background: none;
-  border: none;
-  padding: 4px;
-  margin-left: 5px;
-  cursor: pointer;
-}
-
-.task-card__delete-button svg {
-  width: 16px;
-  height: 16px;
-}
-
-.task-card__move-button {
-  all: unset;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: color var(--transition-fast);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.task-card__move-button svg {
-  width: 20px;
-  height: 20px;
+.task-card__icon {
+  width: 18px;
+  height: 18px;
 }
 
 .task-card__move-button:hover {
@@ -84,37 +36,19 @@
 
 .task-card__date,
 .task-card__deadline {
-  display: flex;
-  align-items: center;
   gap: 6px;
-  font-size: 0.75rem;
-  color: var(--text-muted);
 }
 
-.task-card__date svg,
-.task-card__deadline svg {
+.task-card__date-icon,
+.task-card__deadline-icon {
   width: 14px;
   height: 14px;
-}
-
-.task-card__deadline {
-  color: #d63031;
-  font-weight: 500;
 }
 
 .task-card__footer {
   display: flex;
   justify-content: flex-start;
   margin-top: 4px;
-}
-
-.task-card__priority {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 4px;
-  letter-spacing: 0.05em;
 }
 
 .task-card__priority--high {

@@ -14,7 +14,8 @@ export class TaskCard {
   async createElement() {
     const { id, title, deadline, priority } = this.task;
     const $card = document.createElement("div");
-    $card.className = "task-card";
+    $card.className =
+      "task-card focus-none bg-primary p-md rounded-md shadow-card mb-md border flex flex-col gap-sm";
     $card.dataset.taskId = id;
     $card.setAttribute("tabindex", "0");
     $card.setAttribute("role", "article");
@@ -34,7 +35,7 @@ export class TaskCard {
 
     if (deadline) {
       card.querySelector(".task-card__info").innerHTML = `
-        <div class="task-card__deadline">
+        <div class="task-card__deadline flex items-center text-xs text-todo font-medium">
           <i data-lucide="clock" class="task-card__deadline-icon" aria-hidden="true"></i>
           <span>${deadline}</span>
         </div>
@@ -43,7 +44,7 @@ export class TaskCard {
 
     if (priority) {
       $card.querySelector(".task-card__footer").innerHTML = `
-        <span class="task-card__priority task-card__priority--${priority.toLowerCase()}" aria-label="Priority: ${priority}">
+        <span class="task-card__priority task-card__priority--${priority.toLowerCase()} uppercase font-bold tracking-wide rounded-sm px-sm py-xs text-xs" aria-label="Priority: ${priority}">
           ${priority}
         </span>
       `;

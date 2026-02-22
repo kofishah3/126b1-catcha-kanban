@@ -1,10 +1,20 @@
-<div class="kanban-column__header">
-  <div class="kanban-column__header-left">
+<div
+  class="kanban-column__header flex items-center justify-between gap-sm py-sm px-md"
+>
+  <div class="kanban-column__header-left flex items-center gap-sm">
     <i class="kanban-column__icon" aria-hidden="true"></i>
-    <h3 class="kanban-column__title"></h3>
+    <h3
+      class="kanban-column__title font-heading font-bold uppercase tracking-wide m-0"
+    ></h3>
   </div>
-  <button class="kanban-column__add-button">
-    <i data-lucide="plus" aria-hidden="true"></i>
+  <button
+    class="kanban-column__add-button focus-none cursor-pointer flex items-center justify-center transition-fast"
+  >
+    <i
+      data-lucide="plus"
+      class="kanban-column__add-icon"
+      aria-hidden="true"
+    ></i>
   </button>
 </div>
-<div class="kanban-column__tasks-container" role="list"></div>
+<div class="kanban-column__tasks-container flex-1 p-md" role="list"></div>

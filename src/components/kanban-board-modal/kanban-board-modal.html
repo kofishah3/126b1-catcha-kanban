@@ -1,17 +1,34 @@
-<h2 id="board-modal-title">Create Kanban Board</h2>
+<h2 id="board-modal-title" class="kanban-board-modal__title m-0 font-heading">
+  Create Kanban Board
+</h2>
 
-<label>
+<label
+  class="kanban-board-modal__label flex flex-col gap-xs font-heading font-semibold text-primary"
+>
   Board Name
   <input
     type="text"
     id="board-name"
+    class="kanban-board-modal__input bg-secondary font-sans text-primary rounded-sm py-sm px-md border border-none focus-ring-input transition-fast w-full"
     placeholder="Enter board name"
     aria-label="Board name"
     aria-required="true"
   />
 </label>
 
-<div class="modal-actions">
-  <button id="cancel-board" aria-label="Cancel and close modal">Cancel</button>
-  <button id="create-board" aria-label="Create board">Create</button>
+<div class="modal-actions flex justify-end gap-sm mt-sm">
+  <button
+    id="cancel-board"
+    class="modal-actions__button modal-actions__button--cancel rounded-md font-heading font-semibold cursor-pointer transition-fast bg-transparent text-muted border py-sm px-md"
+    aria-label="Cancel and close modal"
+  >
+    Cancel
+  </button>
+  <button
+    id="create-board"
+    class="modal-actions__button modal-actions__button--create rounded-md font-heading font-semibold cursor-pointer transition-fast bg-primary text-white border-none shadow-card py-sm px-md"
+    aria-label="Create board"
+  >
+    Create
+  </button>
 </div>

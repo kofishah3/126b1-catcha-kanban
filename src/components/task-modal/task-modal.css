@@ -8,12 +8,12 @@
   gap: var(--spacing-md);
 }
 
-.task-modal h2 {
+.task-modal__heading {
   margin: 0;
   font-family: var(--font-heading);
 }
 
-.task-modal label {
+.task-modal__label {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
@@ -23,7 +23,7 @@
   color: var(--text-primary);
 }
 
-.deadline-selects select {
+.deadline-selects__select {
   flex: 1;
   padding: 0.6rem 1rem;
   border: 1px solid #e0e0e0;
@@ -43,8 +43,8 @@
     box-shadow var(--transition-fast);
 }
 
-input[type="text"],
-textarea {
+.task-modal__input,
+.task-modal__textarea {
   padding: 0.75rem 1rem;
   border: 1px solid #e0e0e0;
   border-radius: var(--radius-sm);
@@ -57,8 +57,8 @@ textarea {
     box-shadow var(--transition-fast);
 }
 
-input[type="text"]::placeholder,
-textarea::placeholder {
+.task-modal__input::placeholder,
+.task-modal__textarea::placeholder {
   color: var(--text-muted);
 }
 
@@ -70,7 +70,7 @@ textarea::placeholder {
   border-radius: var(--radius-md);
 }
 
-.priority-buttons button {
+.priority-buttons__button {
   flex: 1;
   padding: 0.5rem;
   border-radius: calc(var(--radius-md) - 4px);
@@ -84,23 +84,23 @@ textarea::placeholder {
   transition: all var(--transition-fast);
 }
 
-.priority-buttons button:hover {
+.priority-buttons__button:hover {
   color: var(--text-primary);
 }
 
-.priority-buttons .active {
+.priority-buttons__button--active {
   background: white;
   color: var(--text-primary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.priority-buttons button[data-priority="High"].active {
+.priority-buttons__button--high.priority-buttons__button--active {
   color: #d63031;
 }
-.priority-buttons button[data-priority="Medium"].active {
+.priority-buttons__button--medium.priority-buttons__button--active {
   color: #f0932b;
 }
-.priority-buttons button[data-priority="Low"].active {
+.priority-buttons__button--low.priority-buttons__button--active {
   color: #1976d2;
 }
 
@@ -109,10 +109,18 @@ textarea::placeholder {
   gap: 0.75rem;
 }
 
-.deadline-selects select:hover,
-input[type="text"]:hover,
-textarea:hover {
+.deadline-selects__select:hover,
+.task-modal__input:hover,
+.task-modal__textarea:hover {
   border-color: #bdbdbd;
+}
+
+.deadline-selects__select:focus-visible,
+.task-modal__input:focus-visible,
+.task-modal__textarea:focus-visible {
+  outline: none;
+  border-color: var(--focus-ring);
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
 }
 
 .modal-actions {
@@ -122,7 +130,7 @@ textarea:hover {
   margin-top: var(--spacing-sm);
 }
 
-.modal-actions button {
+.modal-actions__button {
   padding: 0.75rem 1.5rem;
   border-radius: var(--radius-md);
   font-family: var(--font-heading);
@@ -132,31 +140,31 @@ textarea:hover {
   transition: all var(--transition-fast);
 }
 
-#cancel-task {
+.modal-actions__button--cancel {
   background: transparent;
   border: 1px solid #e0e0e0;
   color: var(--text-muted);
 }
 
-#cancel-task:hover {
+.modal-actions__button--cancel:hover {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
   border-color: #bdbdbd;
 }
 
-#create-task {
+.modal-actions__button--create {
   background-color: var(--text-primary);
   color: white;
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-#create-task:hover {
+.modal-actions__button--create:hover {
   background-color: #333;
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-#create-task:active {
+.modal-actions__button--create:active {
   transform: translateY(0);
 }

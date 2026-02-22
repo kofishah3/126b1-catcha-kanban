@@ -5,7 +5,7 @@
   margin-top: var(--spacing-sm);
 }
 
-.modal-actions button {
+.modal-actions__button {
   padding: 0.75rem 1.5rem;
   border-radius: var(--radius-md);
   font-family: var(--font-heading);
@@ -15,36 +15,36 @@
   transition: all var(--transition-fast);
 }
 
-#cancel-board {
+.modal-actions__button--cancel {
   background: transparent;
   border: 1px solid #e0e0e0;
   color: var(--text-muted);
 }
 
-#cancel-board:hover {
+.modal-actions__button--cancel:hover {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
   border-color: #bdbdbd;
 }
 
-#create-board {
+.modal-actions__button--create {
   background-color: var(--text-primary);
   color: white;
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-#create-board:hover {
+.modal-actions__button--create:hover {
   background-color: #333;
   transform: translateY(-1px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-#create-board:active {
+.modal-actions__button--create:active {
   transform: translateY(0);
 }
 
-input[type="text"] {
+.kanban-board-modal__input {
   padding: 0.75rem 1rem;
   border: 1px solid #e0e0e0;
   border-radius: var(--radius-sm);
@@ -57,10 +57,17 @@ input[type="text"] {
     box-shadow var(--transition-fast);
 }
 
-input[type="text"]::placeholder {
+.kanban-board-modal__input::placeholder {
   color: var(--text-muted);
 }
 
-input[type="text"]:hover {
+.kanban-board-modal__input:hover,
+.kanban-board-modal__input:focus-visible {
   border-color: #bdbdbd;
+}
+
+.kanban-board-modal__input:focus-visible {
+  outline: none;
+  border-color: var(--focus-ring);
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
 }

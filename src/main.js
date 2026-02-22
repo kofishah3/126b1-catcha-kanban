@@ -62,7 +62,7 @@ function renderBoardsNav() {
     const isActive = board.id === currentBoardId;
 
     const link = document.createElement("div");
-    link.className = `board-link ${isActive ? "board-link--active" : ""}`;
+    link.className = `board-link focus-none focus-ring ${isActive ? "board-link--active" : ""}`;
     link.dataset.boardId = board.id;
 
     link.setAttribute("tabindex", "0");
@@ -96,9 +96,9 @@ function renderBoardsNav() {
 
     if (BOARDS.length > 1) {
       const deleteBtn = document.createElement("button");
-      deleteBtn.className = "board-link__delete-button";
+      deleteBtn.className = "board-link__delete-button focus-none focus-ring";
       deleteBtn.setAttribute("aria-label", `Delete board: ${board.name}`);
-      deleteBtn.innerHTML = `<i data-lucide="trash-2" aria-hidden="true"></i>`;
+      deleteBtn.innerHTML = `<i data-lucide="trash-2" class="board-link__delete-icon" aria-hidden="true"></i>`;
 
       deleteBtn.addEventListener("click", async (e) => {
         e.stopPropagation();

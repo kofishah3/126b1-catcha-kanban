@@ -16,36 +16,16 @@
 .kanban-column {
   width: 400px;
   min-width: 280px;
-  background-color: var(--bg-column);
-  border-radius: var(--radius-lg);
-  display: flex;
-  flex-direction: column;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .kanban-column__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.kanban-column__header-left {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
 .kanban-column__title {
-  font-family: var(--font-heading);
   font-size: 0.9rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .kanban-column__icon {
@@ -56,16 +36,9 @@
 
 .kanban-column__add-button {
   all: unset;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  transition:
-    background-color var(--transition-fast),
-    color var(--transition-fast);
   color: inherit;
   opacity: 0.6;
 }
@@ -75,7 +48,7 @@
   opacity: 1;
 }
 
-.kanban-column__add-button svg {
+.kanban-column__add-icon {
   width: 18px;
   height: 18px;
   stroke-width: 2.5px;
@@ -106,8 +79,6 @@
 }
 
 .kanban-column__tasks-container {
-  flex: 1;
-  padding: var(--spacing-md);
   min-height: 100px;
   overflow-y: auto;
 }
