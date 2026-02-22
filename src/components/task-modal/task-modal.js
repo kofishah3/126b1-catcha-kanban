@@ -1,12 +1,12 @@
 export async function createTaskModal(columnId) {
   const overlay = document.createElement("div");
-  overlay.className = "modal-overlay";
+  overlay.className = "modal-overlay flex justify-center items-center";
   overlay.setAttribute("role", "dialog");
   overlay.setAttribute("aria-modal", "true");
   overlay.setAttribute("aria-labelledby", "task-modal-title");
 
   const modal = document.createElement("div");
-  modal.className = "task-modal";
+  modal.className = "task-modal bg-white p-lg rounded-lg flex flex-col gap-md";
 
   if (!createTaskModal.template) {
     const response = await fetch("./src/components/task-modal/task-modal.html");

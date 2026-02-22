@@ -3,7 +3,7 @@ import { TaskCard } from "../task-card/task-card.js";
 export async function createColumn({ id, title }, tasks = [], boardId) {
   const $section = document.createElement("section");
   const columnClassModifier = title.toLowerCase().replace(/\s+/g, "-");
-  $section.className = `kanban-column kanban-column--${columnClassModifier}`;
+  $section.className = `kanban-column bg-column rounded-lg flex flex-col border kanban-column--${columnClassModifier}`;
   $section.dataset.columnId = id;
   $section.setAttribute("aria-label", `${title} column`);
 

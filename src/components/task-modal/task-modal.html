@@ -1,22 +1,32 @@
-<h2 id="task-modal-title" class="task-modal__heading">Create Task</h2>
+<h2 id="task-modal-title" class="task-modal__heading m-0 font-heading">
+  Create Task
+</h2>
 
-<label class="task-modal__label">
+<label
+  class="task-modal__label flex flex-col gap-xs font-heading font-semibold text-primary"
+>
   Task Name
   <input
     type="text"
     id="task-title"
-    class="task-modal__input"
+    class="task-modal__input bg-secondary font-sans text-primary rounded-sm py-sm px-md border border-none focus-ring-input transition-fast w-full"
     placeholder="Enter task name"
     aria-label="Task name"
     aria-required="true"
   />
 </label>
 
-<label class="task-modal__label">
+<label
+  class="task-modal__label flex flex-col gap-xs font-heading font-semibold text-primary"
+>
   Priority
-  <div class="priority-buttons" role="group" aria-label="Select task priority">
+  <div
+    class="priority-buttons flex gap-sm bg-secondary p-xs rounded-md"
+    role="group"
+    aria-label="Select task priority"
+  >
     <button
-      class="priority-buttons__button priority-buttons__button--low"
+      class="priority-buttons__button priority-buttons__button--low flex-1 p-xs rounded-sm border-none bg-transparent text-muted font-heading font-semibold cursor-pointer transition-fast"
       data-priority="Low"
       aria-pressed="false"
       aria-label="Set priority to Low"
@@ -24,7 +34,7 @@
       Low
     </button>
     <button
-      class="priority-buttons__button priority-buttons__button--medium priority-buttons__button--active"
+      class="priority-buttons__button priority-buttons__button--medium priority-buttons__button--active flex-1 p-xs rounded-sm border-none bg-transparent text-muted font-heading font-semibold cursor-pointer transition-fast"
       data-priority="Medium"
       aria-pressed="true"
       aria-label="Set priority to Medium"
@@ -32,7 +42,7 @@
       Medium
     </button>
     <button
-      class="priority-buttons__button priority-buttons__button--high"
+      class="priority-buttons__button priority-buttons__button--high flex-1 p-xs rounded-sm border-none bg-transparent text-muted font-heading font-semibold cursor-pointer transition-fast"
       data-priority="High"
       aria-pressed="false"
       aria-label="Set priority to High"
@@ -42,38 +52,40 @@
   </div>
 </label>
 
-<label class="task-modal__label">
+<label
+  class="task-modal__label flex flex-col gap-xs font-heading font-semibold text-primary"
+>
   Deadline
-  <div class="deadline-selects">
+  <div class="deadline-selects flex gap-sm w-full">
     <select
       id="deadline-month"
-      class="deadline-selects__select"
+      class="deadline-selects__select flex-1 bg-secondary border rounded-sm font-sans text-primary cursor-pointer transition-fast py-sm px-md focus-ring-input"
       aria-label="Deadline month"
     ></select>
     <select
       id="deadline-day"
-      class="deadline-selects__select"
+      class="deadline-selects__select flex-1 bg-secondary border rounded-sm font-sans text-primary cursor-pointer transition-fast py-sm px-md focus-ring-input"
       aria-label="Deadline day"
     ></select>
     <select
       id="deadline-year"
-      class="deadline-selects__select"
+      class="deadline-selects__select flex-1 bg-secondary border rounded-sm font-sans text-primary cursor-pointer transition-fast py-sm px-md focus-ring-input"
       aria-label="Deadline year"
     ></select>
   </div>
 </label>
 
-<div class="modal-actions">
+<div class="modal-actions flex justify-end gap-sm mt-sm">
   <button
     id="cancel-task"
-    class="modal-actions__button modal-actions__button--cancel"
+    class="modal-actions__button modal-actions__button--cancel rounded-md font-heading font-semibold cursor-pointer transition-fast bg-transparent text-muted border py-sm px-md"
     aria-label="Cancel and close modal"
   >
     Cancel
   </button>
   <button
     id="create-task"
-    class="modal-actions__button modal-actions__button--create"
+    class="modal-actions__button modal-actions__button--create rounded-md font-heading font-semibold cursor-pointer transition-fast bg-primary text-white border-none shadow-card py-sm px-md"
     aria-label="Create task"
   >
     Create
