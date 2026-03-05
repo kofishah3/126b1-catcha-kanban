@@ -7,7 +7,7 @@ import {
   deleteTask,
   moveTask,
   deleteBoard,
-} from "./api/storage.js";
+} from "./services/sync.js";
 import { createKanbanBoardModal } from "./components/kanban-board-modal/kanban-board-modal.js";
 import { createTaskModal } from "./components/task-modal/task-modal.js";
 import { createDeleteModal } from "./components/delete-modal/delete-modal.js";
