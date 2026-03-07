@@ -6,7 +6,8 @@
  *   title: string,
  *   // description: string,
  *   createdAt: date,
- *   deadline: date,        // (optional, e.g., "2024-12-31"),
+ *   deadline: date,
+ *   // (optional, e.g., "2024-12-31"),
  *   priority: string,      // ("Low", "Medium", "High"),
  *   columnId: string,      // The status of the card, or the column this task belongs to (e.g., "to-do", "doing", "done")
  * }
@@ -36,19 +37,15 @@ export function generateTaskId() {
  * @returns {Array}
  */
 export function loadTasks(boardId) {
-  try {
-    const key = getTasksKey(boardId);
-    const data = localStorage.getItem(key);
+  const key = getTasksKey(boardId);
+  const data = localStorage.getItem(key);
 
-    if (!data) {
-      return [];
-    }
-
-    const tasks = JSON.parse(data);
-    return Array.isArray(tasks) ? tasks : [];
-  } catch (error) {
-    throw error;
+  if (!data) {
+    return [];
   }
+
+  const tasks = JSON.parse(data);
+  return Array.isArray(tasks) ? tasks : [];
 }
 
 /**
@@ -56,24 +53,16 @@ export function loadTasks(boardId) {
  * @param {Array} tasks
  */
 export function saveTasks(boardId, tasks) {
-  try {
-    const key = getTasksKey(boardId);
-    localStorage.setItem(key, JSON.stringify(tasks));
-  } catch (error) {
-    throw error;
-  }
+  const key = getTasksKey(boardId);
+  localStorage.setItem(key, JSON.stringify(tasks));
 }
 
 /**
  * @param {string} boardId
  */
 export function clearTasksKey(boardId) {
-  try {
-    const key = getTasksKey(boardId);
-    localStorage.removeItem(key);
-  } catch (error) {
-    throw error;
-  }
+  const key = getTasksKey(boardId);
+  localStorage.removeItem(key);
 }
 
 const BOARDS_KEY = "kanban-boards";
@@ -82,21 +71,13 @@ const BOARDS_KEY = "kanban-boards";
  * @returns {Array}
  */
 export function getBoards() {
-  try {
-    const data = localStorage.getItem(BOARDS_KEY);
-    return data ? JSON.parse(data) : [];
-  } catch (error) {
-    throw error;
-  }
+  const data = localStorage.getItem(BOARDS_KEY);
+  return data ? JSON.parse(data) : [];
 }
 
 /**
  * @param {Array} boards
  */
 export function saveBoards(boards) {
-  try {
-    localStorage.setItem(BOARDS_KEY, JSON.stringify(boards));
-  } catch (error) {
-    throw error;
-  }
+  localStorage.setItem(BOARDS_KEY, JSON.stringify(boards));
 }
