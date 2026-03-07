@@ -47,53 +47,56 @@ export function loadTasks(boardId) {
     const tasks = JSON.parse(data);
     return Array.isArray(tasks) ? tasks : [];
   } catch (error) {
-    console.error(`Error loading tasks for board ${boardId}:`, error);
-    return [];
+    throw error;
   }
 }
 
 /**
  * @param {string} boardId
  * @param {Array} tasks
- * @returns {boolean} Success status
  */
 export function saveTasks(boardId, tasks) {
   try {
     const key = getTasksKey(boardId);
     localStorage.setItem(key, JSON.stringify(tasks));
-    return true;
   } catch (error) {
-    if (error.name === "QuotaExceededError") {
-      console.error("localStorage quota exceeded");
-    } else {
-      console.error(`Error saving tasks for board ${boardId}:`, error);
-    }
-    return false;
+    throw error;
   }
 }
 
 /**
  * @param {string} boardId
- * @returns {boolean}
  */
 export function clearTasksKey(boardId) {
   try {
     const key = getTasksKey(boardId);
     localStorage.removeItem(key);
-    return true;
   } catch (error) {
-    console.error(`Error clearing tasks for board ${boardId}:`, error);
-    return false;
+    throw error;
   }
 }
 
 const BOARDS_KEY = "kanban-boards";
 
+/**
+ * @returns {Array}
+ */
 export function getBoards() {
-  const data = localStorage.getItem(BOARDS_KEY);
-  return data ? JSON.parse(data) : [];
+  try {
+    const data = localStorage.getItem(BOARDS_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (error) {
+    throw error;
+  }
 }
 
+/**
+ * @param {Array} boards
+ */
 export function saveBoards(boards) {
-  localStorage.setItem(BOARDS_KEY, JSON.stringify(boards));
+  try {
+    localStorage.setItem(BOARDS_KEY, JSON.stringify(boards));
+  } catch (error) {
+    throw error;
+  }
 }

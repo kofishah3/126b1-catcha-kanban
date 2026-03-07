@@ -15,7 +15,11 @@ import {
  * @returns {Array}
  */
 export function getTasks(boardId) {
-  return loadTasks(boardId);
+  try {
+    return loadTasks(boardId);
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
@@ -25,15 +29,19 @@ export function getTasks(boardId) {
  * @returns {Array}
  */
 export function getTasksByColumn(boardId, columnId) {
-  const tasks = loadTasks(boardId);
-  return tasks.filter((task) => task.columnId === columnId);
+  try {
+    const tasks = loadTasks(boardId);
+    return tasks.filter((task) => task.columnId === columnId);
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
  * Add a new task to a board
  * @param {string} boardId
  * @param {Object} taskData
- * @returns {Object|null} The created task object or null if failed
+ * @returns {Object} The created task object
  */
 export function addTask(boardId, taskData) {
   try {
@@ -49,14 +57,11 @@ export function addTask(boardId, taskData) {
     };
 
     tasks.push(newTask);
+    saveTasks(boardId, tasks);
 
-    if (saveTasks(boardId, tasks)) {
-      return newTask;
-    }
-    return null;
+    return newTask;
   } catch (error) {
-    console.error("Error adding task:", error);
-    return null;
+    throw error;
   }
 }
 
@@ -65,7 +70,7 @@ export function addTask(boardId, taskData) {
  * @param {string} boardId
  * @param {string} taskId
  * @param {Object} updates
- * @returns {Object|null} The updated task object or null if not found
+ * @returns {Object} The updated task object
  */
 export function updateTask(boardId, taskId, updates) {
   try {
@@ -73,8 +78,7 @@ export function updateTask(boardId, taskId, updates) {
     const taskIndex = tasks.findIndex((task) => task.id === taskId);
 
     if (taskIndex === -1) {
-      console.warn(`Task ${taskId} not found in board ${boardId}`);
-      return null;
+      throw new Error(`Task not found: ${taskId}`);
     }
 
     tasks[taskIndex] = {
@@ -84,13 +88,11 @@ export function updateTask(boardId, taskId, updates) {
       createdAt: tasks[taskIndex].createdAt,
     };
 
-    if (saveTasks(boardId, tasks)) {
-      return tasks[taskIndex];
-    }
-    return null;
+    saveTasks(boardId, tasks);
+
+    return tasks[taskIndex];
   } catch (error) {
-    console.error("Error updating task:", error);
-    return null;
+    throw error;
   }
 }
 
@@ -98,7 +100,6 @@ export function updateTask(boardId, taskId, updates) {
  * Delete a task from a board
  * @param {string} boardId
  * @param {string} taskId
- * @returns {boolean}
  */
 export function deleteTask(boardId, taskId) {
   try {
@@ -106,14 +107,12 @@ export function deleteTask(boardId, taskId) {
     const filteredTasks = tasks.filter((task) => task.id !== taskId);
 
     if (filteredTasks.length === tasks.length) {
-      console.warn(`Task ${taskId} not found in board ${boardId}`);
-      return false;
+      throw new Error(`Task not found: ${taskId}`);
     }
 
-    return saveTasks(boardId, filteredTasks);
+    saveTasks(boardId, filteredTasks);
   } catch (error) {
-    console.error("Error deleting task:", error);
-    return false;
+    throw error;
   }
 }
 
@@ -122,19 +121,26 @@ export function deleteTask(boardId, taskId) {
  * @param {string} boardId
  * @param {string} taskId
  * @param {string} newColumnId
- * @returns {Object|null}
+ * @returns {Object} The updated task object
  */
 export function moveTask(boardId, taskId, newColumnId) {
-  return updateTask(boardId, taskId, { columnId: newColumnId });
+  try {
+    return updateTask(boardId, taskId, { columnId: newColumnId });
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
  * Remove all tasks belonging to a board
  * @param {string} boardId
- * @returns {boolean}
  */
 export function clearBoardTasks(boardId) {
-  return clearTasksKey(boardId);
+  try {
+    clearTasksKey(boardId);
+  } catch (error) {
+    throw error;
+  }
 }
 
 // ===== BOARD SYNC OPERATIONS =====
@@ -147,23 +153,26 @@ export { getBoards };
  * @returns {Object} The created board object
  */
 export function addBoard(name) {
-  const boards = getBoards();
+  try {
+    const boards = getBoards();
 
-  const newBoard = {
-    id: `board-${Date.now()}`,
-    name,
-  };
+    const newBoard = {
+      id: `board-${Date.now()}`,
+      name,
+    };
 
-  boards.push(newBoard);
-  saveBoards(boards);
+    boards.push(newBoard);
+    saveBoards(boards);
 
-  return newBoard;
+    return newBoard;
+  } catch (error) {
+    throw error;
+  }
 }
 
 /**
  * Delete a board and all its tasks
  * @param {string} boardId
- * @returns {boolean}
  */
 export function deleteBoard(boardId) {
   try {
@@ -172,10 +181,7 @@ export function deleteBoard(boardId) {
     const boards = getBoards();
     const filtered = boards.filter((b) => b.id !== boardId);
     saveBoards(filtered);
-
-    return true;
   } catch (error) {
-    console.error("Error deleting board:", error);
-    return false;
+    throw error;
   }
 }
