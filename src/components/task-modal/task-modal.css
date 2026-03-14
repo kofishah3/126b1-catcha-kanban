@@ -1,0 +1,170 @@
+.task-modal {
+  background: white;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.task-modal__heading {
+  margin: 0;
+  font-family: var(--font-heading);
+}
+
+.task-modal__label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.deadline-selects__select {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23918174' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.task-modal__input,
+.task-modal__textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.task-modal__input::placeholder,
+.task-modal__textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.priority-buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+  background-color: var(--bg-secondary);
+  padding: 4px;
+  border-radius: var(--radius-md);
+}
+
+.priority-buttons__button {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: calc(var(--radius-md) - 4px);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.priority-buttons__button:hover {
+  color: var(--text-primary);
+}
+
+.priority-buttons__button--active {
+  background: white;
+  color: var(--text-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.priority-buttons__button--high.priority-buttons__button--active {
+  color: #d63031;
+}
+.priority-buttons__button--medium.priority-buttons__button--active {
+  color: #f0932b;
+}
+.priority-buttons__button--low.priority-buttons__button--active {
+  color: #1976d2;
+}
+
+.deadline-selects {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.deadline-selects__select:hover,
+.task-modal__input:hover,
+.task-modal__textarea:hover {
+  border-color: #bdbdbd;
+}
+
+.deadline-selects__select:focus-visible,
+.task-modal__input:focus-visible,
+.task-modal__textarea:focus-visible {
+  outline: none;
+  border-color: var(--focus-ring);
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: var(--spacing-sm);
+}
+
+.modal-actions__button {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.modal-actions__button--cancel {
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  color: var(--text-muted);
+}
+
+.modal-actions__button--cancel:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: #bdbdbd;
+}
+
+.modal-actions__button--create {
+  background-color: var(--text-primary);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modal-actions__button--create:hover {
+  background-color: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.modal-actions__button--create:active {
+  transform: translateY(0);
+}
